@@ -12,6 +12,7 @@ return new class extends Migration {
     {
         Schema::create('skins', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid')->unique()->nullable();
 
             $table->foreignId('weapon_id')
                 ->constrained('weapons')

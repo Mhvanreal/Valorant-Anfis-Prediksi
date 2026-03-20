@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Valorant Prediksi - Landing Page</title>
 
     <!-- Fonts -->
@@ -175,24 +176,41 @@
                 transform: translateY(-20px);
             }
         }
+
+        /* Modal styles */
+        #skinsModal {
+            backdrop-filter: blur(8px);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        #skinsModal>div {
+            animation: scaleIn 0.3s ease-out;
+        }
+
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
     </style>
 </head>
 
 <body class="antialiased bg-gray-900">
     <!-- Navigation -->
-    <nav class="fixed w-full bg-gray-900/95 backdrop-blur-md shadow-lg border-b border-red-500/20 z-50 animate-fadeIn">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
+    <nav class="fixed z-50 w-full border-b shadow-lg bg-gray-900/95 backdrop-blur-md border-red-500/20 animate-fadeIn">
+        <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
                 <div class="flex-shrink-0">
-                    <h1 class="text-xl md:text-2xl font-bold gradient-text">Valorant Prediksi</h1>
+                    <h1 class="text-xl font-bold md:text-2xl gradient-text">V-Tech</h1>
                 </div>
 
-                <div class="hidden md:flex space-x-8 items-center">
-                    <a href="#beranda" class="nav-link active text-gray-200 hover:text-red-500 font-medium">Beranda</a>
-                    <a href="#gallery" class="nav-link text-gray-200 hover:text-red-500 font-medium">Gallery</a>
-                    <a href="#aboutme" class="nav-link text-gray-200 hover:text-red-500 font-medium">About Me</a>
+                <div class="items-center hidden space-x-8 md:flex">
+                    <a href="#beranda" class="font-medium text-gray-200 nav-link active hover:text-red-500">Beranda</a>
+                    <a href="#gallery" class="font-medium text-gray-200 nav-link hover:text-red-500">Gallery</a>
+                    <a href="#aboutme" class="font-medium text-gray-200 nav-link hover:text-red-500">About Me</a>
                     <a href="{{ route('login') }}"
-                        class="px-6 py-2 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-lg font-semibold hover:shadow-lg hover:shadow-red-500/50 transform hover:scale-105 transition duration-300">
+                        class="px-6 py-2 font-semibold text-white transition duration-300 transform rounded-lg bg-gradient-to-r from-red-600 to-red-700 hover:shadow-lg hover:shadow-red-500/50 hover:scale-105">
                         Sign In
                     </a>
                 </div>
@@ -200,7 +218,7 @@
                 <!-- Mobile menu button -->
                 <div class="md:hidden">
                     <button id="mobile-menu-button" class="text-gray-200 hover:text-red-500 focus:outline-none">
-                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
@@ -210,7 +228,7 @@
         </div>
 
         <!-- Mobile menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-gray-800 border-t border-red-500/20">
+        <div id="mobile-menu" class="hidden bg-gray-800 border-t md:hidden border-red-500/20">
             <div class="px-2 py-2 space-y-1">
                 <a href="#beranda"
                     class="block px-3 py-1.5 text-sm text-gray-200 hover:bg-red-500/10 hover:text-red-500 rounded-md">Beranda</a>
@@ -229,23 +247,23 @@
 
     <!-- Beranda Section -->
     <section id="beranda"
-        class="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-black pt-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
-            <div class="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+        class="flex items-center justify-center min-h-screen pt-16 bg-gradient-to-br from-gray-900 via-gray-800 to-black">
+        <div class="px-4 py-12 mx-auto max-w-7xl sm:px-6 lg:px-8 md:py-20">
+            <div class="grid items-center gap-8 md:grid-cols-2 md:gap-12">
                 <div class="space-y-4 md:space-y-6">
-                    <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white animate-slideInLeft">
+                    <h2 class="text-3xl font-bold text-white sm:text-4xl md:text-5xl lg:text-6xl animate-slideInLeft">
                         Welcome to <span class="gradient-text">Valorant Prediksi</span>
                     </h2>
-                    <p class="text-base md:text-xl text-gray-300 animate-slideInLeft delay-200">
+                    <p class="text-base text-gray-300 delay-200 md:text-xl animate-slideInLeft">
                         Prediksi skin Valorant terbaik dengan teknologi machine learning dan analisis data terkini.
                     </p>
-                    {{-- <div class="flex gap-4 animate-slideInLeft delay-300">
+                    {{-- <div class="flex gap-4 delay-300 animate-slideInLeft">
                         <button
-                            class="px-8 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg font-semibold hover:shadow-lg transform hover:scale-105 transition duration-300">
+                            class="px-8 py-3 font-semibold text-white transition duration-300 transform rounded-lg bg-gradient-to-r from-purple-600 to-blue-600 hover:shadow-lg hover:scale-105">
                             Get Started
                         </button>
                         <button
-                            class="px-8 py-3 border-2 border-purple-600 text-purple-600 rounded-lg font-semibold hover:bg-purple-50 transition duration-300">
+                            class="px-8 py-3 font-semibold text-purple-600 transition duration-300 border-2 border-purple-600 rounded-lg hover:bg-purple-50">
                             Learn More
                         </button>
                     </div> --}}
@@ -253,57 +271,80 @@
 
                 <div class="relative animate-slideInRight">
                     <div
-                        class="w-full h-64 md:h-96 bg-gradient-to-br from-red-600 via-red-500 to-gray-900 rounded-2xl shadow-2xl shadow-red-500/50 floating">
+                        class="flex items-center justify-center w-full h-64 shadow-2xl md:h-96 bg-gradient-to-br from-red-600 via-red-500 to-gray-900 rounded-2xl shadow-red-500/50 floating">
+                        <img src="{{ asset('img/LOGO_Valo.png') }}" alt="Valorant Logo"
+                            class="object-contain w-48 h-48 md:w-72 md:h-72 drop-shadow-2xl">
                     </div>
-                    <div class="absolute top-2 right-2 w-16 h-16 md:w-24 md:h-24 bg-cyan-400 rounded-full opacity-75">
+                    <div class="absolute w-16 h-16 bg-red-100 rounded-full opacity-75 top-2 right-2 md:w-24 md:h-24">
                     </div>
-                    <div class="absolute bottom-2 left-2 w-20 h-20 md:w-32 md:h-32 bg-red-400 rounded-full opacity-75">
+                    <div class="absolute w-20 h-20 bg-red-400 rounded-full opacity-75 bottom-2 left-2 md:w-32 md:h-32">
                     </div>
                 </div>
             </div>
 
             <!-- Generate Data Section -->
-            <div class="mt-12 md:mt-20 animate-fadeInUp delay-300">
+            <div class="mt-12 delay-300 md:mt-20 animate-fadeInUp">
                 <div
-                    class="bg-gray-800 border border-red-500/20 rounded-xl md:rounded-2xl shadow-2xl shadow-red-500/10 overflow-hidden">
-                    <div class="bg-gradient-to-r from-red-600 to-red-700 p-4 md:p-6">
-                        <h3 class="text-lg md:text-2xl font-bold text-white flex items-center">
-                            <svg class="w-6 h-6 md:w-8 md:h-8 mr-2 md:mr-3" fill="none" stroke="currentColor"
+                    class="overflow-hidden bg-gray-800 border shadow-2xl border-red-500/20 rounded-xl md:rounded-2xl shadow-red-500/10">
+                    <div class="p-4 bg-gradient-to-r from-red-600 to-red-700 md:p-6">
+                        <h3 class="flex items-center text-lg font-bold text-white md:text-2xl">
+                            <svg class="w-6 h-6 mr-2 md:w-8 md:h-8 md:mr-3" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
                             </svg>
-                            Generate Data Training
+                            Generate Data
                         </h3>
-                        <p class="text-sm md:text-base text-red-100 mt-1 md:mt-2">Generate dataset untuk melatih model
+                        <p class="mt-1 text-sm text-red-100 md:text-base md:mt-2">Generate dataset untuk melatih model
                             prediksi skin Valorant</p>
                     </div>
 
                     <div class="p-4 md:p-8">
                         <form id="generateDataForm" class="space-y-4 md:space-y-6">
+                            @csrf
                             <!-- Input Parameters Grid -->
-                            <div class="grid md:grid-cols-2 gap-4 md:gap-6">
+                            <div class="grid gap-4 md:grid-cols-2 md:gap-6">
+                                <!-- Weapon -->
+                                <div class="space-y-1.5 md:space-y-2">
+                                    <label for="weapon"
+                                        class="flex items-center block text-xs font-semibold text-gray-200 md:text-sm">
+                                        <svg class="w-4 h-4 md:w-5 md:h-5 mr-1.5 md:mr-2 text-red-500" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                        </svg>
+                                        Weapon
+                                    </label>
+                                    <select id="weapon" name="weapon" required
+                                        class="w-full px-3 py-2 text-sm text-white transition bg-gray-700 border-2 border-gray-600 rounded-lg outline-none md:px-4 md:py-3 md:text-base focus:border-red-500 focus:ring-2 focus:ring-red-500/50">
+                                        <option value="">-- Pilih Weapon --</option>
+                                        @foreach ($weapons as $weapon)
+                                            <option value="{{ $weapon->id }}">{{ $weapon->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
                                 <!-- Harga -->
                                 <div class="space-y-1.5 md:space-y-2">
                                     <label for="price"
-                                        class="block text-xs md:text-sm font-semibold text-gray-200 flex items-center">
-                                        <svg class="w-4 h-4 md:w-5 md:h-5 mr-1.5 md:mr-2 text-red-500" fill="none"
+                                        class="flex items-center block text-xs font-semibold text-gray-200 md:text-sm">
+                                        <svg class="w-4 h-4 md:w-5 md:h-5 mr-1.5 md:mr-2 text-cyan-500" fill="none"
                                             stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
-                                        Harga (VP)
+                                        Harga / budget (VP)
                                     </label>
                                     <input type="number" id="price" name="price" required
-                                        class="w-full px-3 py-2 md:px-4 md:py-3 text-sm md:text-base bg-gray-700 border-2 border-gray-600 text-white rounded-lg focus:border-red-500 focus:ring-2 focus:ring-red-500/50 outline-none transition"
+                                        class="w-full px-3 py-2 text-sm text-white transition bg-gray-700 border-2 border-gray-600 rounded-lg outline-none md:px-4 md:py-3 md:text-base focus:border-red-500 focus:ring-2 focus:ring-red-500/50"
                                         placeholder="Contoh: 2175" min="0" max="10000" step="1">
                                     <p class="text-xs text-gray-400">Range: 0 - 10,000 VP</p>
                                 </div>
 
                                 <!-- Efek Visual -->
                                 <div class="space-y-1.5 md:space-y-2">
-                                    <label for="visualEffect"
-                                        class="block text-xs md:text-sm font-semibold text-gray-200 flex items-center">
+                                    <label for="vfx"
+                                        class="flex items-center block text-xs font-semibold text-gray-200 md:text-sm">
                                         <svg class="w-4 h-4 md:w-5 md:h-5 mr-1.5 md:mr-2 text-cyan-400" fill="none"
                                             stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -311,22 +352,17 @@
                                         </svg>
                                         Efek Visual
                                     </label>
-                                    <select id="visualEffect" name="visualEffect" required
-                                        class="w-full px-3 py-2 md:px-4 md:py-3 text-sm md:text-base bg-gray-700 border-2 border-gray-600 text-white rounded-lg focus:border-red-500 focus:ring-2 focus:ring-red-500/50 outline-none transition">
-                                        <option value="">-- Pilih Efek Visual --</option>
-                                        <option value="none">Tanpa Efek</option>
-                                        <option value="standard">Standard VFX</option>
-                                        <option value="premium">Premium VFX</option>
-                                        <option value="finisher">VFX + Finisher</option>
-                                        <option value="evolving">Evolving VFX</option>
-                                        <option value="reactive">Reactive VFX</option>
-                                    </select>
+                                    <input type="number" id="vfx" name="vfx" required
+                                        class="w-full px-3 py-2 text-sm text-white transition bg-gray-700 border-2 border-gray-600 rounded-lg outline-none md:px-4 md:py-3 md:text-base focus:border-red-500 focus:ring-2 focus:ring-red-500/50"
+                                        placeholder="semakin besar nilai semakin bagus efeknya" min="0"
+                                        max="10" step="0.1">
+                                    <p class="text-xs text-gray-400">Range: 0 - 10 </p>
                                 </div>
 
                                 <!-- Rarity -->
                                 <div class="space-y-1.5 md:space-y-2">
                                     <label for="rarity"
-                                        class="block text-xs md:text-sm font-semibold text-gray-200 flex items-center">
+                                        class="flex items-center block text-xs font-semibold text-gray-200 md:text-sm">
                                         <svg class="w-4 h-4 md:w-5 md:h-5 mr-1.5 md:mr-2 text-yellow-400"
                                             fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -335,7 +371,7 @@
                                         Rarity
                                     </label>
                                     <select id="rarity" name="rarity" required
-                                        class="w-full px-3 py-2 md:px-4 md:py-3 text-sm md:text-base bg-gray-700 border-2 border-gray-600 text-white rounded-lg focus:border-red-500 focus:ring-2 focus:ring-red-500/50 outline-none transition">
+                                        class="w-full px-3 py-2 text-sm text-white transition bg-gray-700 border-2 border-gray-600 rounded-lg outline-none md:px-4 md:py-3 md:text-base focus:border-red-500 focus:ring-2 focus:ring-red-500/50">
                                         <option value="">-- Pilih Rarity --</option>
                                         <option value="select">Select Edition</option>
                                         <option value="deluxe">Deluxe Edition</option>
@@ -346,9 +382,9 @@
                                 </div>
 
                                 <!-- Popularity -->
-                                <div class="space-y-1.5 md:space-y-2">
+                                {{-- <div class="space-y-1.5 md:space-y-2">
                                     <label for="popularity"
-                                        class="block text-xs md:text-sm font-semibold text-gray-200 flex items-center">
+                                        class="flex items-center block text-xs font-semibold text-gray-200 md:text-sm">
                                         <svg class="w-4 h-4 md:w-5 md:h-5 mr-1.5 md:mr-2 text-red-400" fill="none"
                                             stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -357,16 +393,16 @@
                                         Popularity Score
                                     </label>
                                     <input type="number" id="popularity" name="popularity" required
-                                        class="w-full px-3 py-2 md:px-4 md:py-3 text-sm md:text-base bg-gray-700 border-2 border-gray-600 text-white rounded-lg focus:border-red-500 focus:ring-2 focus:ring-red-500/50 outline-none transition"
+                                        class="w-full px-3 py-2 text-sm text-white transition bg-gray-700 border-2 border-gray-600 rounded-lg outline-none md:px-4 md:py-3 md:text-base focus:border-red-500 focus:ring-2 focus:ring-red-500/50"
                                         placeholder="Contoh: 85" min="0" max="100" step="0.1">
                                     <p class="text-xs text-gray-400">Range: 0 - 100 (semakin tinggi semakin populer)
                                     </p>
-                                </div>
+                                </div> --}}
                             </div>
 
                             <!-- Info Card -->
                             <div
-                                class="bg-gradient-to-r from-gray-700 to-gray-800 border-l-4 border-red-500 p-3 md:p-4 rounded-lg">
+                                class="p-3 border-l-4 border-red-500 rounded-lg bg-gradient-to-r from-gray-700 to-gray-800 md:p-4">
                                 <div class="flex items-start">
                                     <svg class="w-4 h-4 md:w-5 md:h-5 text-red-500 mr-2 md:mr-3 flex-shrink-0 mt-0.5"
                                         fill="currentColor" viewBox="0 0 20 20">
@@ -375,16 +411,17 @@
                                             clip-rule="evenodd" />
                                     </svg>
                                     <div>
-                                        <p class="text-xs md:text-sm font-medium text-gray-100">Parameter Prediksi</p>
-                                        <p class="text-xs text-gray-300 mt-1">Model akan memprediksi tingkat kesukaan
-                                            skin berdasarkan 4 parameter yang Anda masukkan: Harga, Efek Visual, Rarity,
-                                            dan Popularity Score.</p>
+                                        <p class="text-xs font-medium text-gray-100 md:text-sm">Parameter Prediksi</p>
+                                        <p class="mt-1 text-xs text-gray-300">Model akan memprediksi rekomendasi skin
+                                            berdasarkan parameter Weapon, Harga, Efek Visual, dan Rarity.
+                                            Nilai Harga, VFX, dan Rarity dinormalisasi dengan Min-Max sebelum dikirim ke
+                                            FastAPI.</p>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Action Buttons -->
-                            <div class="flex gap-2 md:gap-4 pt-3 md:pt-4">
+                            <div class="flex gap-2 pt-3 md:gap-4 md:pt-4">
                                 <button type="submit"
                                     class="flex-1 px-4 py-2.5 md:px-8 md:py-4 text-sm md:text-base bg-gradient-to-r from-red-600 to-red-700 text-white rounded-lg font-semibold hover:shadow-xl hover:shadow-red-500/50 transform hover:scale-105 transition duration-300 flex items-center justify-center">
                                     <svg class="w-4 h-4 md:w-5 md:h-5 mr-1.5 md:mr-2" fill="none"
@@ -403,19 +440,19 @@
 
                         <!-- Progress Bar (Hidden by default) -->
                         <div id="progressSection" class="hidden mt-4 md:mt-6">
-                            <div class="bg-gray-700 rounded-full h-3 md:h-4 overflow-hidden">
+                            <div class="h-3 overflow-hidden bg-gray-700 rounded-full md:h-4">
                                 <div id="progressBar"
-                                    class="bg-gradient-to-r from-red-600 to-red-700 h-full transition-all duration-500"
+                                    class="h-full transition-all duration-500 bg-gradient-to-r from-red-600 to-red-700"
                                     style="width: 0%"></div>
                             </div>
-                            <p id="progressText" class="text-center text-sm text-gray-300 mt-2">Generating data...</p>
+                            <p id="progressText" class="mt-2 text-sm text-center text-gray-300">Generating data...</p>
                         </div>
 
                         <!-- Result Section (Hidden by default) -->
                         <div id="resultSection"
-                            class="hidden mt-4 md:mt-6 p-4 md:p-6 bg-gradient-to-r from-gray-700 to-gray-800 border-2 border-green-500 rounded-lg shadow-lg shadow-green-500/20">
+                            class="hidden p-4 mt-4 border-2 border-green-500 rounded-lg shadow-lg md:mt-6 md:p-6 bg-gradient-to-r from-gray-700 to-gray-800 shadow-green-500/20">
                             <div class="flex items-start">
-                                <svg class="w-6 h-6 md:w-8 md:h-8 text-green-600 mr-2 md:mr-3 flex-shrink-0"
+                                <svg class="flex-shrink-0 w-6 h-6 mr-2 text-green-600 md:w-8 md:h-8 md:mr-3"
                                     fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd"
                                         d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
@@ -423,7 +460,7 @@
                                 </svg>
                                 <div class="flex-1">
                                     <h4
-                                        class="text-base md:text-xl font-bold text-green-800 mb-2 md:mb-3 flex items-center">
+                                        class="flex items-center mb-2 text-base font-bold text-green-800 md:text-xl md:mb-3">
                                         <svg class="w-5 h-5 md:w-6 md:h-6 mr-1.5 md:mr-2" fill="none"
                                             stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -432,12 +469,12 @@
                                         Prediksi Berhasil!
                                     </h4>
                                     <div id="resultText"
-                                        class="text-sm md:text-base text-gray-100 mb-3 md:mb-4 space-y-2"></div>
-                                    <div class="bg-gray-900 border border-gray-700 rounded-lg p-3 md:p-4 mb-3 md:mb-4">
-                                        <h5 class="text-sm md:text-base font-semibold text-gray-200 mb-2">Parameter
+                                        class="mb-3 space-y-2 text-sm text-gray-100 md:text-base md:mb-4"></div>
+                                    <div class="p-3 mb-3 bg-gray-900 border border-gray-700 rounded-lg md:p-4 md:mb-4">
+                                        <h5 class="mb-2 text-sm font-semibold text-gray-200 md:text-base">Parameter
                                             Input:</h5>
                                         <div id="inputSummary"
-                                            class="grid grid-cols-2 gap-2 md:gap-3 text-xs md:text-sm"></div>
+                                            class="grid grid-cols-2 gap-2 text-xs md:gap-3 md:text-sm"></div>
                                     </div>
                                     <div class="flex gap-2 md:gap-3">
                                         <button id="tryAgainBtn"
@@ -467,26 +504,26 @@
             </div>
 
             <!-- Features -->
-            <div class="grid md:grid-cols-3 gap-4 md:gap-8 mt-12 md:mt-20">
+            <div class="grid gap-4 mt-12 md:grid-cols-3 md:gap-8 md:mt-20">
                 <div
-                    class="bg-gray-800 border border-red-500/20 p-6 md:p-8 rounded-xl shadow-lg shadow-red-500/10 card-hover animate-scaleIn">
+                    class="p-6 bg-gray-800 border shadow-lg border-red-500/20 md:p-8 rounded-xl shadow-red-500/10 card-hover animate-scaleIn">
                     <div
-                        class="w-12 h-12 md:w-16 md:h-16 bg-red-500/20 rounded-full flex items-center justify-center mb-3 md:mb-4">
-                        <svg class="w-6 h-6 md:w-8 md:h-8 text-red-500" fill="none" stroke="currentColor"
+                        class="flex items-center justify-center w-12 h-12 mb-3 rounded-full md:w-16 md:h-16 bg-red-500/20 md:mb-4">
+                        <svg class="w-6 h-6 text-red-500 md:w-8 md:h-8" fill="none" stroke="currentColor"
                             viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M13 10V3L4 14h7v7l9-11h-7z" />
                         </svg>
                     </div>
                     <h3 class="text-lg md:text-xl font-bold text-gray-100 mb-1.5 md:mb-2">Fast & Accurate</h3>
-                    <p class="text-sm md:text-base text-gray-300">Prediksi cepat dan akurat menggunakan algoritma
+                    <p class="text-sm text-gray-300 md:text-base">Prediksi cepat dan akurat menggunakan algoritma
                         terbaru</p>
                 </div>
 
                 <div
-                    class="bg-gray-800 border border-cyan-400/20 p-6 md:p-8 rounded-xl shadow-lg shadow-cyan-400/10 card-hover animate-scaleIn delay-200">
+                    class="p-6 delay-200 bg-gray-800 border shadow-lg border-cyan-400/20 md:p-8 rounded-xl shadow-cyan-400/10 card-hover animate-scaleIn">
                     <div
-                        class="w-12 h-12 md:w-16 md:h-16 bg-cyan-400/20 rounded-full flex items-center justify-center mb-3 md:mb-4">
+                        class="flex items-center justify-center w-12 h-12 mb-3 rounded-full md:w-16 md:h-16 bg-cyan-400/20 md:mb-4">
                         <svg class="w-6 h-6 md:w-8 md:h-8 text-cyan-400" fill="none" stroke="currentColor"
                             viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -494,153 +531,169 @@
                         </svg>
                     </div>
                     <h3 class="text-lg md:text-xl font-bold text-gray-100 mb-1.5 md:mb-2">Secure & Reliable</h3>
-                    <p class="text-sm md:text-base text-gray-300">Data aman dengan sistem keamanan tingkat tinggi</p>
+                    <p class="text-sm text-gray-300 md:text-base">Data aman dengan sistem keamanan tingkat tinggi</p>
                 </div>
 
                 <div
-                    class="bg-gray-800 border border-red-400/20 p-6 md:p-8 rounded-xl shadow-lg shadow-red-400/10 card-hover animate-scaleIn delay-400">
+                    class="p-6 bg-gray-800 border shadow-lg border-red-400/20 md:p-8 rounded-xl shadow-red-400/10 card-hover animate-scaleIn delay-400">
                     <div
-                        class="w-12 h-12 md:w-16 md:h-16 bg-red-400/20 rounded-full flex items-center justify-center mb-3 md:mb-4">
-                        <svg class="w-6 h-6 md:w-8 md:h-8 text-red-400" fill="none" stroke="currentColor"
+                        class="flex items-center justify-center w-12 h-12 mb-3 rounded-full md:w-16 md:h-16 bg-red-400/20 md:mb-4">
+                        <svg class="w-6 h-6 text-red-400 md:w-8 md:h-8" fill="none" stroke="currentColor"
                             viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                     </div>
                     <h3 class="text-lg md:text-xl font-bold text-gray-100 mb-1.5 md:mb-2">24/7 Support</h3>
-                    <p class="text-sm md:text-base text-gray-300">Dukungan penuh kapan saja Anda membutuhkan</p>
+                    <p class="text-sm text-gray-300 md:text-base">Dukungan penuh kapan saja Anda membutuhkan</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Gallery Section -->
-    <section id="gallery" class="min-h-screen bg-gray-900 py-12 md:py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12 md:mb-16 animate-fadeInUp">
-                <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-100 mb-3 md:mb-4">
-                    Our <span class="gradient-text">Gallery</span>
+    <section id="gallery" class="min-h-screen py-12 bg-gray-900 md:py-20">
+        <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <div class="mb-12 text-center md:mb-16 animate-fadeInUp">
+                <h2 class="mb-3 text-3xl font-bold text-gray-100 md:text-4xl lg:text-5xl md:mb-4">
+                    Weapon <span class="gradient-text">Gallery</span>
                 </h2>
-                <p class="text-base md:text-xl text-gray-300">Koleksi visual terbaik dari prediksi dan analisis kami
+                <p class="text-base text-gray-300 md:text-xl">Pilih weapon untuk melihat koleksi skin-nya
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
-                <!-- Gallery Item 1 -->
-                <div
-                    class="group relative overflow-hidden rounded-xl md:rounded-2xl shadow-lg card-hover animate-scaleIn">
-                    <div
-                        class="aspect-w-16 aspect-h-9 bg-gradient-to-br from-purple-400 via-pink-400 to-red-400 h-48 md:h-64">
-                    </div>
-                    <div
-                        class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition duration-300 flex items-center justify-center">
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 md:gap-8">
+                @php
+                    $gradients = [
+                        'from-purple-400 via-pink-400 to-red-400',
+                        'from-red-600 via-red-500 to-red-700',
+                        'from-cyan-500 via-cyan-600 to-blue-600',
+                        'from-gray-700 via-gray-800 to-gray-900',
+                        'from-red-500 via-red-600 to-pink-600',
+                        'from-cyan-400 via-cyan-500 to-teal-600',
+                        'from-yellow-400 via-orange-500 to-red-500',
+                        'from-green-400 via-emerald-500 to-teal-500',
+                        'from-indigo-500 via-purple-500 to-pink-500',
+                    ];
+                @endphp
+
+                @forelse($weapons as $index => $weapon)
+                    <!-- Weapon Item {{ $index + 1 }} -->
+                    <div class="relative overflow-hidden shadow-lg cursor-pointer group rounded-xl md:rounded-2xl card-hover animate-scaleIn weapon-card"
+                        data-weapon-id="{{ $weapon->id }}" data-weapon-name="{{ $weapon->name }}"
+                        style="animation-delay: {{ $index * 100 }}ms">
                         <div
-                            class="text-white text-center opacity-0 group-hover:opacity-100 transition duration-300 transform scale-90 group-hover:scale-100">
-                            <h3 class="text-lg md:text-2xl font-bold mb-1 md:mb-2">Vandal Skins</h3>
-                            <p class="text-xs md:text-sm">Premium Collection</p>
+                            class="flex items-center justify-center h-48 aspect-w-16 aspect-h-9 bg-gradient-to-br {{ $gradients[$index % count($gradients)] }} md:h-64">
+                            <div class="text-center">
+                                <h2
+                                    class="text-4xl font-bold text-white transition duration-300 md:text-5xl lg:text-6xl group-hover:scale-110">
+                                    {{ $weapon->name }}
+                                </h2>
+                            </div>
+                        </div>
+                        <!-- Always visible weapon name at bottom -->
+                        <div
+                            class="absolute bottom-0 left-0 right-0 p-4 transition duration-300 bg-gradient-to-t from-black/90 via-black/70 to-transparent md:p-6">
+                            <h3 class="mb-1 text-xl font-bold text-white md:text-2xl">{{ $weapon->name }}</h3>
+                            <p class="text-sm text-gray-300 md:text-base">{{ $weapon->skins_count }} Skins</p>
+                        </div>
+                        <!-- Hover overlay with button -->
+                        <div
+                            class="absolute inset-0 flex items-center justify-center transition duration-300 bg-black bg-opacity-0 group-hover:bg-opacity-60">
+                            <button
+                                class="px-6 py-3 text-sm font-semibold text-white transition transform scale-90 rounded-lg opacity-0 md:text-base bg-gradient-to-r from-red-600 to-red-700 group-hover:opacity-100 group-hover:scale-100 hover:shadow-lg hover:shadow-red-500/50">
+                                <svg class="inline-block w-5 h-5 mr-2" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                </svg>
+                                Lihat Koleksi
+                            </button>
                         </div>
                     </div>
-                </div>
-
-                <!-- Gallery Item 2 -->
-                <div class="group relative overflow-hidden rounded-2xl shadow-lg card-hover animate-scaleIn delay-100">
-                    <div class="aspect-w-16 aspect-h-9 bg-gradient-to-br from-red-600 via-red-500 to-red-700 h-64">
-                    </div>
-                    <div
-                        class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition duration-300 flex items-center justify-center">
-                        <div
-                            class="text-white text-center opacity-0 group-hover:opacity-100 transition duration-300 transform scale-90 group-hover:scale-100">
-                            <h3 class="text-2xl font-bold mb-2">Phantom Skins</h3>
-                            <p class="text-sm">Elite Series</p>
+                @empty
+                    <div class="col-span-full">
+                        <div class="p-8 text-center bg-gray-800 border border-gray-700 rounded-lg">
+                            <svg class="w-16 h-16 mx-auto mb-4 text-gray-600" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                            </svg>
+                            <h3 class="mb-2 text-xl font-bold text-gray-300">Belum Ada Data Weapon</h3>
+                            <p class="text-gray-400">Silakan tambahkan data weapon terlebih dahulu</p>
                         </div>
                     </div>
-                </div>
+                @endforelse
+            </div>
+        </div>
+    </section>
 
-                <!-- Gallery Item 3 -->
-                <div class="group relative overflow-hidden rounded-2xl shadow-lg card-hover animate-scaleIn delay-200">
-                    <div class="aspect-w-16 aspect-h-9 bg-gradient-to-br from-cyan-500 via-cyan-600 to-blue-600 h-64">
-                    </div>
-                    <div
-                        class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition duration-300 flex items-center justify-center">
-                        <div
-                            class="text-white text-center opacity-0 group-hover:opacity-100 transition duration-300 transform scale-90 group-hover:scale-100">
-                            <h3 class="text-2xl font-bold mb-2">Operator Skins</h3>
-                            <p class="text-sm">Legendary Edition</p>
-                        </div>
-                    </div>
+    <!-- Skins Modal -->
+    <div id="skinsModal"
+        class="fixed inset-0 z-50 flex items-center justify-center hidden p-4 bg-black bg-opacity-75">
+        <div class="relative w-full max-w-6xl max-h-screen overflow-hidden bg-gray-800 rounded-2xl">
+            <!-- Modal Header -->
+            <div
+                class="sticky top-0 z-10 flex items-center justify-between p-4 border-b md:p-6 bg-gradient-to-r from-red-600 to-red-700 border-red-500/20">
+                <div>
+                    <h3 id="modalWeaponName" class="text-2xl font-bold text-white md:text-3xl">Loading...</h3>
+                    <p id="modalSkinsCount" class="text-sm text-red-100 md:text-base">Memuat data...</p>
                 </div>
+                <button id="closeModal" class="p-2 text-white transition rounded-lg hover:bg-red-800">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
 
-                <!-- Gallery Item 4 -->
-                <div class="group relative overflow-hidden rounded-2xl shadow-lg card-hover animate-scaleIn delay-300">
-                    <div class="aspect-w-16 aspect-h-9 bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900 h-64">
-                    </div>
-                    <div
-                        class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition duration-300 flex items-center justify-center">
-                        <div
-                            class="text-white text-center opacity-0 group-hover:opacity-100 transition duration-300 transform scale-90 group-hover:scale-100">
-                            <h3 class="text-2xl font-bold mb-2">Knife Skins</h3>
-                            <p class="text-sm">Exclusive Collection</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Gallery Item 5 -->
-                <div class="group relative overflow-hidden rounded-2xl shadow-lg card-hover animate-scaleIn delay-400">
-                    <div class="aspect-w-16 aspect-h-9 bg-gradient-to-br from-red-500 via-red-600 to-pink-600 h-64">
-                    </div>
-                    <div
-                        class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition duration-300 flex items-center justify-center">
-                        <div
-                            class="text-white text-center opacity-0 group-hover:opacity-100 transition duration-300 transform scale-90 group-hover:scale-100">
-                            <h3 class="text-2xl font-bold mb-2">Sheriff Skins</h3>
-                            <p class="text-sm">Special Edition</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Gallery Item 6 -->
-                <div class="group relative overflow-hidden rounded-2xl shadow-lg card-hover animate-scaleIn delay-500">
-                    <div class="aspect-w-16 aspect-h-9 bg-gradient-to-br from-cyan-400 via-cyan-500 to-teal-600 h-64">
-                    </div>
-                    <div
-                        class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition duration-300 flex items-center justify-center">
-                        <div
-                            class="text-white text-center opacity-0 group-hover:opacity-100 transition duration-300 transform scale-90 group-hover:scale-100">
-                            <h3 class="text-2xl font-bold mb-2">Bundle Skins</h3>
-                            <p class="text-sm">Complete Package</p>
+            <!-- Modal Body -->
+            <div class="p-4 overflow-y-auto md:p-6" style="max-height: calc(100vh - 200px)">
+                <div id="skinsContainer" class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 md:gap-6">
+                    <!-- Loading State -->
+                    <div class="flex items-center justify-center col-span-full">
+                        <div class="text-center">
+                            <svg class="w-12 h-12 mx-auto text-red-500 animate-spin" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                            </svg>
+                            <p class="mt-4 text-gray-300">Memuat skins...</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
     <!-- About Me Section -->
-    <section id="aboutme" class="min-h-screen bg-gradient-to-br from-gray-800 via-gray-900 to-black py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 animate-fadeInUp">
-                <h2 class="text-4xl md:text-5xl font-bold text-gray-100 mb-4">
+    <section id="aboutme" class="min-h-screen py-20 bg-gradient-to-br from-gray-800 via-gray-900 to-black">
+        <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <div class="mb-16 text-center animate-fadeInUp">
+                <h2 class="mb-4 text-4xl font-bold text-gray-100 md:text-5xl">
                     About <span class="gradient-text">Me</span>
                 </h2>
                 <p class="text-xl text-gray-300">Mengenal lebih dekat tentang proyek ini</p>
             </div>
 
-            <div class="grid md:grid-cols-2 gap-12 items-center">
+            <div class="grid items-center gap-12 md:grid-cols-2">
                 <div class="space-y-6 animate-slideInLeft">
                     <h3 class="text-3xl font-bold text-gray-100">Valorant Prediksi Platform</h3>
-                    <p class="text-lg text-gray-300 leading-relaxed">
+                    <p class="text-lg leading-relaxed text-gray-300">
                         Platform prediksi skin Valorant yang menggunakan teknologi machine learning untuk memberikan
                         analisis mendalam tentang tren skin, popularitas, dan rekomendasi berdasarkan data historis.
                     </p>
-                    <p class="text-lg text-gray-300 leading-relaxed">
+                    <p class="text-lg leading-relaxed text-gray-300">
                         Dikembangkan dengan passion untuk gaming dan data science, kami berkomitmen untuk memberikan
                         pengalaman terbaik bagi para pemain Valorant dalam memilih skin favorit mereka.
                     </p>
 
-                    <div class="space-y-4 pt-4">
+                    <div class="pt-4 space-y-4">
                         <div class="flex items-start space-x-4">
                             <div class="flex-shrink-0">
-                                <div class="w-12 h-12 bg-red-500/20 rounded-full flex items-center justify-center">
+                                <div class="flex items-center justify-center w-12 h-12 rounded-full bg-red-500/20">
                                     <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -656,7 +709,7 @@
 
                         <div class="flex items-start space-x-4">
                             <div class="flex-shrink-0">
-                                <div class="w-12 h-12 bg-cyan-500/20 rounded-full flex items-center justify-center">
+                                <div class="flex items-center justify-center w-12 h-12 rounded-full bg-cyan-500/20">
                                     <svg class="w-6 h-6 text-cyan-500" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -672,7 +725,7 @@
 
                         <div class="flex items-start space-x-4">
                             <div class="flex-shrink-0">
-                                <div class="w-12 h-12 bg-red-400/20 rounded-full flex items-center justify-center">
+                                <div class="flex items-center justify-center w-12 h-12 rounded-full bg-red-400/20">
                                     <svg class="w-6 h-6 text-red-400" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -689,28 +742,28 @@
                 </div>
 
                 <div class="relative animate-slideInRight">
-                    <div class="bg-gray-800 border border-gray-700 p-8 rounded-2xl shadow-2xl">
+                    <div class="p-8 bg-gray-800 border border-gray-700 shadow-2xl rounded-2xl">
                         <div class="space-y-6">
                             <div>
-                                <h4 class="text-lg font-semibold text-gray-100 mb-2">Teknologi</h4>
+                                <h4 class="mb-2 text-lg font-semibold text-gray-100">Teknologi</h4>
                                 <div class="flex flex-wrap gap-2">
                                     <span
-                                        class="px-4 py-2 bg-red-500/20 text-red-400 rounded-full text-sm font-medium">Laravel</span>
+                                        class="px-4 py-2 text-sm font-medium text-red-400 rounded-full bg-red-500/20">Laravel</span>
                                     <span
-                                        class="px-4 py-2 bg-cyan-500/20 text-cyan-400 rounded-full text-sm font-medium">TailwindCSS</span>
+                                        class="px-4 py-2 text-sm font-medium rounded-full bg-cyan-500/20 text-cyan-400">TailwindCSS</span>
                                     <span
-                                        class="px-4 py-2 bg-red-400/20 text-red-300 rounded-full text-sm font-medium">Machine
+                                        class="px-4 py-2 text-sm font-medium text-red-300 rounded-full bg-red-400/20">Machine
                                         Learning</span>
                                     <span
-                                        class="px-4 py-2 bg-cyan-400/20 text-cyan-300 rounded-full text-sm font-medium">MySQL</span>
+                                        class="px-4 py-2 text-sm font-medium rounded-full bg-cyan-400/20 text-cyan-300">MySQL</span>
                                 </div>
                             </div>
 
                             <div>
-                                <h4 class="text-lg font-semibold text-gray-100 mb-2">Fitur Utama</h4>
+                                <h4 class="mb-2 text-lg font-semibold text-gray-100">Fitur Utama</h4>
                                 <ul class="space-y-2 text-gray-300">
                                     <li class="flex items-center">
-                                        <svg class="w-5 h-5 text-red-500 mr-2" fill="currentColor"
+                                        <svg class="w-5 h-5 mr-2 text-red-500" fill="currentColor"
                                             viewBox="0 0 20 20">
                                             <path fill-rule="evenodd"
                                                 d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
@@ -719,7 +772,7 @@
                                         Prediksi Skin Terpopuler
                                     </li>
                                     <li class="flex items-center">
-                                        <svg class="w-5 h-5 text-red-500 mr-2" fill="currentColor"
+                                        <svg class="w-5 h-5 mr-2 text-red-500" fill="currentColor"
                                             viewBox="0 0 20 20">
                                             <path fill-rule="evenodd"
                                                 d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
@@ -728,7 +781,7 @@
                                         Analisis Tren Bulanan
                                     </li>
                                     <li class="flex items-center">
-                                        <svg class="w-5 h-5 text-red-500 mr-2" fill="currentColor"
+                                        <svg class="w-5 h-5 mr-2 text-red-500" fill="currentColor"
                                             viewBox="0 0 20 20">
                                             <path fill-rule="evenodd"
                                                 d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
@@ -737,7 +790,7 @@
                                         Rekomendasi Personal
                                     </li>
                                     <li class="flex items-center">
-                                        <svg class="w-5 h-5 text-red-500 mr-2" fill="currentColor"
+                                        <svg class="w-5 h-5 mr-2 text-red-500" fill="currentColor"
                                             viewBox="0 0 20 20">
                                             <path fill-rule="evenodd"
                                                 d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
@@ -750,7 +803,7 @@
 
                             <div class="pt-4">
                                 <button
-                                    class="w-full px-6 py-3 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-lg font-semibold hover:shadow-lg hover:shadow-red-500/50 transform hover:scale-105 transition duration-300">
+                                    class="w-full px-6 py-3 font-semibold text-white transition duration-300 transform rounded-lg bg-gradient-to-r from-red-600 to-red-700 hover:shadow-lg hover:shadow-red-500/50 hover:scale-105">
                                     Hubungi Kami
                                 </button>
                             </div>
@@ -762,43 +815,43 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid md:grid-cols-3 gap-8">
+    <footer class="py-12 text-white bg-gray-900">
+        <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <div class="grid gap-8 md:grid-cols-3">
                 <div>
-                    <h3 class="text-2xl font-bold gradient-text mb-4">Valorant Prediksi</h3>
+                    <h3 class="mb-4 text-2xl font-bold gradient-text">Valorant Prediksi</h3>
                     <p class="text-gray-400">Platform prediksi skin Valorant terbaik dengan teknologi machine learning.
                     </p>
                 </div>
 
                 <div>
-                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <h4 class="mb-4 text-lg font-semibold">Quick Links</h4>
                     <ul class="space-y-2">
-                        <li><a href="#beranda" class="text-gray-400 hover:text-white transition">Beranda</a></li>
-                        <li><a href="#gallery" class="text-gray-400 hover:text-white transition">Gallery</a></li>
-                        <li><a href="#aboutme" class="text-gray-400 hover:text-white transition">About Me</a></li>
+                        <li><a href="#beranda" class="text-gray-400 transition hover:text-white">Beranda</a></li>
+                        <li><a href="#gallery" class="text-gray-400 transition hover:text-white">Gallery</a></li>
+                        <li><a href="#aboutme" class="text-gray-400 transition hover:text-white">About Me</a></li>
                     </ul>
                 </div>
 
                 <div>
-                    <h4 class="text-lg font-semibold mb-4">Connect With Us</h4>
+                    <h4 class="mb-4 text-lg font-semibold">Connect With Us</h4>
                     <div class="flex space-x-4">
                         <a href="#"
-                            class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-red-600 transition">
+                            class="flex items-center justify-center w-10 h-10 transition bg-gray-800 rounded-full hover:bg-red-600">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                                 <path
                                     d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
                             </svg>
                         </a>
                         <a href="#"
-                            class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-red-600 transition">
+                            class="flex items-center justify-center w-10 h-10 transition bg-gray-800 rounded-full hover:bg-red-600">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                                 <path
                                     d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
                             </svg>
                         </a>
                         <a href="#"
-                            class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-red-600 transition">
+                            class="flex items-center justify-center w-10 h-10 transition bg-gray-800 rounded-full hover:bg-red-600">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                                 <path
                                     d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z" />
@@ -808,7 +861,7 @@
                 </div>
             </div>
 
-            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+            <div class="pt-8 mt-8 text-center text-gray-400 border-t border-gray-800">
                 <p>&copy; 2025 Valorant Prediksi. All rights reserved.</p>
             </div>
         </div>
@@ -902,10 +955,12 @@
 
             // Get form data
             const formData = new FormData(generateDataForm);
+            const weapon = formData.get('weapon');
+            const weaponName = document.getElementById('weapon').options[document.getElementById('weapon')
+                .selectedIndex].text;
             const price = formData.get('price');
-            const visualEffect = formData.get('visualEffect');
+            const vfx = formData.get('vfx');
             const rarity = formData.get('rarity');
-            const popularity = formData.get('popularity');
 
             // Hide result section if visible
             resultSection.classList.add('hidden');
@@ -932,105 +987,108 @@
                 }
             }, 200);
 
-            // Simulate API call (replace with actual API endpoint)
-            setTimeout(() => {
+            try {
+                progressText.textContent = 'Mengirim request ke server...';
+
+                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                const response = await fetch('/recommend', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken,
+                    },
+                    body: JSON.stringify({
+                        weapon,
+                        price,
+                        vfx,
+                        rarity,
+                        top_n: 3,
+                    }),
+                });
+
+                const result = await response.json();
                 clearInterval(interval);
                 progressBar.style.width = '100%';
                 progressText.textContent = 'Prediksi selesai!';
 
-                // Calculate prediction score (simple algorithm for demo)
-                const priceScore = Math.max(0, 100 - (price / 100));
-                const effectScore = {
-                    'none': 20,
-                    'standard': 40,
-                    'premium': 60,
-                    'finisher': 80,
-                    'evolving': 90,
-                    'reactive': 95
-                } [visualEffect] || 50;
-
-                const rarityScore = {
-                    'select': 30,
-                    'deluxe': 50,
-                    'premium': 70,
-                    'exclusive': 85,
-                    'ultra': 95
-                } [rarity] || 50;
-
-                const popularityScore = parseFloat(popularity);
-
-                // Weighted average
-                const predictionScore = (
-                    (priceScore * 0.2) +
-                    (effectScore * 0.3) +
-                    (rarityScore * 0.25) +
-                    (popularityScore * 0.25)
-                ).toFixed(2);
-
-                // Determine category
-                let category, categoryColor, categoryIcon;
-                if (predictionScore >= 80) {
-                    category = "Sangat Disukai";
-                    categoryColor = "text-green-600";
-                    categoryIcon = "😍";
-                } else if (predictionScore >= 60) {
-                    category = "Cukup Disukai";
-                    categoryColor = "text-blue-600";
-                    categoryIcon = "😊";
-                } else if (predictionScore >= 40) {
-                    category = "Netral";
-                    categoryColor = "text-yellow-600";
-                    categoryIcon = "😐";
-                } else {
-                    category = "Kurang Disukai";
-                    categoryColor = "text-red-600";
-                    categoryIcon = "😕";
+                if (!response.ok || result.success !== true) {
+                    throw new Error(result.message || 'Gagal mengambil rekomendasi dari server');
                 }
 
-                // Show result
+                const recommendations = result.recommendations ?? [];
+                const recommendationList = Array.isArray(recommendations) ? recommendations : [];
+                const normalizedInput = result.normalized_input ?? {};
+
                 setTimeout(() => {
                     progressSection.classList.add('hidden');
                     resultSection.classList.remove('hidden');
 
-                    resultText.innerHTML = `
-                        <div class="text-center mb-4">
-                            <div class="text-6xl mb-2">${categoryIcon}</div>
-                            <h5 class="text-2xl font-bold ${categoryColor} mb-2">${category}</h5>
-                            <div class="flex items-center justify-center gap-2">
-                                <span class="text-3xl font-bold text-gray-800">${predictionScore}</span>
-                                <span class="text-lg text-gray-600">/ 100</span>
+                    if (recommendationList.length > 0) {
+                        resultText.innerHTML = `
+                            <div>
+                                <h5 class="mb-3 text-xl font-bold text-green-400">Top ${recommendationList.length} Rekomendasi Skin</h5>
+                                <div class="space-y-2 text-gray-100">
+                                    ${recommendationList.map((item, index) => `
+                                                    <div class="flex items-start justify-between p-3 bg-gray-900 border border-gray-700 rounded-lg">
+                                                        <div class="pr-3">
+                                                            <p class="font-semibold text-white">#${index + 1} ${item.skin_name ?? item.name ?? 'Unnamed Skin'}</p>
+                                                            <p class="text-xs text-gray-400">Weapon: ${item.weapon ?? '-'} | ${item.rarity_name ?? 'Rarity -'}</p>
+                                                            <p class="text-xs text-gray-400">Price: ${item.price ?? '-'} | VFX: ${item.vfx ?? '-'} | Rarity: ${item.rarity ?? '-'}</p>
+                                                        </div>
+                                                        <div class="text-right">
+                                                            <p class="text-sm font-semibold text-cyan-400">${item.match_percentage ?? (item.similarity_score !== undefined ? `${Number(item.similarity_score).toFixed(1)}%` : '-')}</p>
+                                                            <p class="text-xs text-gray-400">ANFIS: ${item.predicted_score !== undefined ? Number(item.predicted_score).toFixed(2) : '-'}</p>
+                                                        </div>
+                                                    </div>
+                                                `).join('')}
+                                </div>
                             </div>
-                        </div>
-                    `;
+                        `;
+                    } else {
+                        resultText.innerHTML = `
+                            <div class="p-3 text-sm border rounded-lg bg-yellow-900/20 border-yellow-500/40 text-yellow-300">
+                                Response diterima, tapi tidak ada data rekomendasi yang bisa ditampilkan.
+                            </div>
+                        `;
+                    }
 
-                    // Display input summary
                     const inputSummary = document.getElementById('inputSummary');
                     inputSummary.innerHTML = `
                         <div class="flex items-center gap-2">
-                            <span class="text-purple-600 font-semibold">💰 Harga:</span>
-                            <span class="text-gray-700">${price} VP</span>
+                            <span class="font-semibold text-red-600">⚔️ Weapon:</span>
+                            <span class="text-gray-300">${weaponName}</span>
                         </div>
                         <div class="flex items-center gap-2">
-                            <span class="text-blue-600 font-semibold">✨ Efek Visual:</span>
-                            <span class="text-gray-700">${visualEffect}</span>
+                            <span class="font-semibold text-cyan-600">💰 Harga:</span>
+                            <span class="text-gray-300">${price} (norm: ${normalizedInput.price ?? '-'})</span>
                         </div>
                         <div class="flex items-center gap-2">
-                            <span class="text-yellow-600 font-semibold">⭐ Rarity:</span>
-                            <span class="text-gray-700">${rarity}</span>
+                            <span class="font-semibold text-purple-600">✨ VFX:</span>
+                            <span class="text-gray-300">${vfx} (norm: ${normalizedInput.vfx ?? '-'})</span>
                         </div>
                         <div class="flex items-center gap-2">
-                            <span class="text-pink-600 font-semibold">📊 Popularity:</span>
-                            <span class="text-gray-700">${popularity}</span>
+                            <span class="font-semibold text-yellow-600">⭐ Rarity:</span>
+                            <span class="text-gray-300">${rarity} (norm: ${normalizedInput.rarity ?? '-'})</span>
                         </div>
                     `;
 
-                    // Smooth scroll to result
                     resultSection.scrollIntoView({
                         behavior: 'smooth',
                         block: 'center'
                     });
-                }, 500);
-            }, 2500);
+                }, 300);
+            } catch (error) {
+                clearInterval(interval);
+                progressSection.classList.add('hidden');
+                resultSection.classList.remove('hidden');
+                resultText.innerHTML = `
+                    <div class="p-3 text-sm border rounded-lg bg-red-900/20 border-red-500/40 text-red-300">
+                        ${error.message}
+                    </div>
+                `;
+                document.getElementById('inputSummary').innerHTML = '';
+            }
         });
 
         // Reset button handler
@@ -1060,13 +1118,11 @@
                     timestamp: new Date().toISOString(),
                     input: {
                         price: formData.get('price'),
-                        visualEffect: formData.get('visualEffect'),
+                        vfx: formData.get('vfx'),
                         rarity: formData.get('rarity'),
-                        popularity: formData.get('popularity')
                     },
                     prediction: {
-                        score: document.querySelector('#resultText .text-3xl').textContent,
-                        category: document.querySelector('#resultText .text-2xl').textContent
+                        html: document.getElementById('resultText').innerHTML
                     }
                 };
 
@@ -1079,6 +1135,162 @@
                 alert('Hasil prediksi berhasil disimpan!');
             });
         }
+
+        // Weapon Gallery & Skins Modal Handler
+        const skinsModal = document.getElementById('skinsModal');
+        const closeModalBtn = document.getElementById('closeModal');
+        const weaponCards = document.querySelectorAll('.weapon-card');
+
+        // Open modal and fetch skins when weapon card is clicked
+        weaponCards.forEach(card => {
+            card.addEventListener('click', async function() {
+                const weaponId = this.dataset.weaponId;
+                const weaponName = this.dataset.weaponName;
+
+                // Show modal
+                skinsModal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+
+                // Update modal header
+                document.getElementById('modalWeaponName').textContent = weaponName;
+                document.getElementById('modalSkinsCount').textContent = 'Memuat data...';
+
+                // Show loading state
+                const skinsContainer = document.getElementById('skinsContainer');
+                skinsContainer.innerHTML = `
+                    <div class="flex items-center justify-center py-12 col-span-full">
+                        <div class="text-center">
+                            <svg class="w-12 h-12 mx-auto text-red-500 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                            </svg>
+                            <p class="mt-4 text-gray-300">Memuat skins...</p>
+                        </div>
+                    </div>
+                `;
+
+                try {
+                    // Fetch skins from API
+                    const response = await fetch(`/api/weapons/${weaponId}/skins`);
+                    const data = await response.json();
+
+                    if (data.success) {
+                        // Update skins count
+                        document.getElementById('modalSkinsCount').textContent =
+                            `${data.skins.length} Skins Tersedia`;
+
+                        // Display skins
+                        if (data.skins.length > 0) {
+                            skinsContainer.innerHTML = data.skins.map((skin, index) => `
+                                <div class="overflow-hidden transition duration-300 bg-gray-700 shadow-lg rounded-xl hover:shadow-2xl hover:shadow-red-500/20 hover:scale-105"
+                                     style="animation: scaleIn 0.5s ease-out ${index * 50}ms both">
+                                    <div class="relative h-48 overflow-hidden bg-gradient-to-br from-gray-600 to-gray-800">
+                                        ${skin.image_url
+                                            ? `<img src="${skin.image_url}" alt="${skin.skin_name}" class="object-cover w-full h-full transition duration-300 hover:scale-110">`
+                                            : `<div class="flex items-center justify-center h-full">
+                                                                                <svg class="w-20 h-20 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                                                </svg>
+                                                                               </div>`
+                                        }
+                                        ${skin.rarity
+                                            ? `<div class="absolute px-3 py-1 text-xs font-semibold text-white rounded-full top-2 right-2 bg-gradient-to-r from-yellow-500 to-orange-500">
+                                                                                ${skin.rarity}
+                                                                               </div>`
+                                            : ''
+                                        }
+                                    </div>
+                                    <div class="p-4">
+                                        <h4 class="mb-2 text-lg font-bold text-white line-clamp-2">${skin.skin_name || 'Unnamed Skin'}</h4>
+                                        <div class="flex items-center justify-between mb-3">
+                                            ${skin.price
+                                                ? `<span class="flex items-center text-sm font-semibold text-red-400">
+                                                                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                                                    </svg>
+                                                                                    ${skin.price} VP
+                                                                                   </span>`
+                                                : '<span class="text-sm text-gray-400">Free</span>'
+                                            }
+                                            ${skin.vfx && isNaN(skin.vfx)
+                                                ? `<span class="px-2 py-1 text-xs font-medium rounded-full bg-cyan-500/20 text-cyan-400">
+                                                                                    ${skin.vfx}
+                                                                                   </span>`
+                                                : ''
+                                            }
+                                        </div>
+                                        ${skin.popularity
+                                            ? `<div class="flex items-center mt-2">
+                                                                                <span class="mr-2 text-xs text-gray-400">Popularity:</span>
+                                                                                <div class="flex-1 h-2 overflow-hidden bg-gray-600 rounded-full">
+                                                                                    <div class="h-full transition-all duration-500 bg-gradient-to-r from-red-500 to-red-600"
+                                                                                         style="width: ${Math.min(100, parseFloat(skin.popularity))}%"></div>
+                                                                                </div>
+                                                                                <span class="ml-2 text-xs font-semibold text-gray-300">${parseFloat(skin.popularity).toFixed(1)}%</span>
+                                                                               </div>`
+                                            : ''
+                                        }
+                                        ${skin.score
+                                            ? `<div class="flex items-center justify-between mt-2 text-xs">
+                                                                                <span class="text-gray-400">Rating Score:</span>
+                                                                                <span class="font-semibold text-yellow-400">${parseFloat(skin.score).toFixed(2)}</span>
+                                                                               </div>`
+                                            : ''
+                                        }
+                                    </div>
+                                </div>
+                            `).join('');
+                        } else {
+                            skinsContainer.innerHTML = `
+                                <div class="col-span-full">
+                                    <div class="p-12 text-center bg-gray-700 rounded-lg">
+                                        <svg class="w-16 h-16 mx-auto mb-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                                        </svg>
+                                        <h3 class="mb-2 text-xl font-bold text-gray-300">Belum Ada Skin</h3>
+                                        <p class="text-gray-400">Skin untuk weapon ini belum tersedia</p>
+                                    </div>
+                                </div>
+                            `;
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error fetching skins:', error);
+                    skinsContainer.innerHTML = `
+                        <div class="col-span-full">
+                            <div class="p-12 text-center border rounded-lg bg-red-900/20 border-red-500/30">
+                                <svg class="w-16 h-16 mx-auto mb-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <h3 class="mb-2 text-xl font-bold text-red-400">Gagal Memuat Data</h3>
+                                <p class="text-gray-300">Terjadi kesalahan saat mengambil data skins</p>
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+        });
+
+        // Close modal
+        function closeModal() {
+            skinsModal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        closeModalBtn.addEventListener('click', closeModal);
+
+        // Close modal when clicking outside
+        skinsModal.addEventListener('click', function(e) {
+            if (e.target === skinsModal) {
+                closeModal();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && !skinsModal.classList.contains('hidden')) {
+                closeModal();
+            }
+        });
     </script>
 </body>
 

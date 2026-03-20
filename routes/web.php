@@ -1,7 +1,13 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SkinController;
+use App\Http\Controllers\SkinImportController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\WeaponController;
+use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\RecommendationController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -14,9 +20,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
+Route::get('/api/weapons/{weapon}/skins', [WelcomeController::class, 'getWeaponSkins'])->name('api.weapon.skins');
+Route::post('/recommend', [RecommendationController::class, 'recommend'])->name('recommend');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -26,6 +32,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Skin CRUD Routes
+    Route::resource('skins', SkinController::class);
+    Route::resource('weapons', WeaponController::class);
+
+    // Skin Import Routes
+    Route::get('/skins-import', [SkinImportController::class, 'showImportForm'])->name('skins.import.form');
+    Route::post('/skins-import', [SkinImportController::class, 'import'])->name('skins.import');
+    Route::get('/skins-import/template', [SkinImportController::class, 'downloadTemplate'])->name('skins.import.template');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
