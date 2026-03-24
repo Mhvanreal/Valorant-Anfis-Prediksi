@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Valorant Prediksi - Landing Page</title>
+    <link rel="icon" type="image/png" href="{{ asset('img/LOGO_Valo.png') }}">
+    <link rel="shortcut icon" type="image/png" href="{{ asset('img/LOGO_Valo.png') }}">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -288,15 +290,16 @@
                     class="overflow-hidden bg-gray-800 border shadow-2xl border-red-500/20 rounded-xl md:rounded-2xl shadow-red-500/10">
                     <div class="p-4 bg-gradient-to-r from-red-600 to-red-700 md:p-6">
                         <h3 class="flex items-center text-lg font-bold text-white md:text-2xl">
-                            <svg class="w-6 h-6 mr-2 md:w-8 md:h-8 md:mr-3" fill="none" stroke="currentColor"
+                            {{-- <svg class="w-6 h-6 mr-2 md:w-8 md:h-8 md:mr-3" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
-                            </svg>
-                            Generate Data
+                            </svg> --}}
+                            Prediksi Skin Valorant
                         </h3>
-                        <p class="mt-1 text-sm text-red-100 md:text-base md:mt-2">Generate dataset untuk melatih model
-                            prediksi skin Valorant</p>
+                        <p class="mt-1 text-sm text-red-100 md:text-base md:mt-2">Generate rekomendasi skin Valorant
+                            terbaik berdasarkan parameter yang kamu masukkan.
+                        </p>
                     </div>
 
                     <div class="p-4 md:p-8">
@@ -337,8 +340,8 @@
                                     </label>
                                     <input type="number" id="price" name="price" required
                                         class="w-full px-3 py-2 text-sm text-white transition bg-gray-700 border-2 border-gray-600 rounded-lg outline-none md:px-4 md:py-3 md:text-base focus:border-red-500 focus:ring-2 focus:ring-red-500/50"
-                                        placeholder="Contoh: 2175" min="0" max="10000" step="1">
-                                    <p class="text-xs text-gray-400">Range: 0 - 10,000 VP</p>
+                                        placeholder="Contoh: 2175" min="0" max="6000" step="1">
+                                    <p class="text-xs text-gray-400">Range: 0 - 6000 VP</p>
                                 </div>
 
                                 <!-- Efek Visual -->
@@ -380,24 +383,6 @@
                                         <option value="ultra">Ultra Edition</option>
                                     </select>
                                 </div>
-
-                                <!-- Popularity -->
-                                {{-- <div class="space-y-1.5 md:space-y-2">
-                                    <label for="popularity"
-                                        class="flex items-center block text-xs font-semibold text-gray-200 md:text-sm">
-                                        <svg class="w-4 h-4 md:w-5 md:h-5 mr-1.5 md:mr-2 text-red-400" fill="none"
-                                            stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                                        </svg>
-                                        Popularity Score
-                                    </label>
-                                    <input type="number" id="popularity" name="popularity" required
-                                        class="w-full px-3 py-2 text-sm text-white transition bg-gray-700 border-2 border-gray-600 rounded-lg outline-none md:px-4 md:py-3 md:text-base focus:border-red-500 focus:ring-2 focus:ring-red-500/50"
-                                        placeholder="Contoh: 85" min="0" max="100" step="0.1">
-                                    <p class="text-xs text-gray-400">Range: 0 - 100 (semakin tinggi semakin populer)
-                                    </p>
-                                </div> --}}
                             </div>
 
                             <!-- Info Card -->
@@ -414,8 +399,9 @@
                                         <p class="text-xs font-medium text-gray-100 md:text-sm">Parameter Prediksi</p>
                                         <p class="mt-1 text-xs text-gray-300">Model akan memprediksi rekomendasi skin
                                             berdasarkan parameter Weapon, Harga, Efek Visual, dan Rarity.
-                                            Nilai Harga, VFX, dan Rarity dinormalisasi dengan Min-Max sebelum dikirim ke
-                                            FastAPI.</p>
+                                            Laravel mengirim nilai input apa adanya, lalu preprocessing dilakukan di
+                                            sisi
+                                            model/FastAPI.</p>
                                     </div>
                                 </div>
                             </div>
@@ -434,6 +420,10 @@
                                 <button type="button" id="resetBtn"
                                     class="px-4 py-2.5 md:px-8 md:py-4 text-sm md:text-base border-2 border-gray-600 text-gray-300 rounded-lg font-semibold hover:bg-gray-700 transition duration-300">
                                     Reset
+                                </button>
+                                <button type="button" id="openRawGeneratorBtn"
+                                    class="px-4 py-2.5 md:px-8 md:py-4 text-sm md:text-base border-2 border-cyan-500/60 text-cyan-300 rounded-lg font-semibold hover:bg-cyan-500/10 transition duration-300">
+                                    Generator Raw (Slide)
                                 </button>
                             </div>
                         </form>
@@ -470,12 +460,6 @@
                                     </h4>
                                     <div id="resultText"
                                         class="mb-3 space-y-2 text-sm text-gray-100 md:text-base md:mb-4"></div>
-                                    <div class="p-3 mb-3 bg-gray-900 border border-gray-700 rounded-lg md:p-4 md:mb-4">
-                                        <h5 class="mb-2 text-sm font-semibold text-gray-200 md:text-base">Parameter
-                                            Input:</h5>
-                                        <div id="inputSummary"
-                                            class="grid grid-cols-2 gap-2 text-xs md:gap-3 md:text-sm"></div>
-                                    </div>
                                     <div class="flex gap-2 md:gap-3">
                                         <button id="tryAgainBtn"
                                             class="px-4 py-1.5 md:px-6 md:py-2 text-sm md:text-base bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition flex items-center">
@@ -502,6 +486,100 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Raw Generator Slide Panel -->
+            <div id="rawGeneratorBackdrop" class="fixed inset-0 z-40 hidden bg-black/60"></div>
+            <aside id="rawGeneratorPanel"
+                class="fixed top-0 right-0 z-50 w-full h-full max-w-xl p-4 transition-transform duration-300 ease-out transform translate-x-full">
+                <div
+                    class="flex flex-col h-full overflow-hidden border shadow-2xl bg-gray-900/95 border-cyan-500/30 rounded-2xl shadow-cyan-500/20">
+                    <div
+                        class="flex items-center justify-between p-4 border-b border-cyan-500/20 bg-gradient-to-r from-cyan-700 to-cyan-900 md:p-5">
+                        <div>
+                            <h4 class="text-lg font-bold text-white md:text-xl">Generator Rekomendasi skin Valorant
+                                Store</h4>
+
+                            <p class="mt-1 text-xs text-cyan-200/90 md:text-sm">Generate ini menyesuaikan store yang
+                                ada di Valorant Anda. Masukkan skin yang available di store untuk diprediksi oleh model
+                                ANFIS.</p>
+                        </div>
+                        <button type="button" id="closeRawGeneratorBtn"
+                            class="px-3 py-1.5 text-sm font-semibold text-white rounded-lg bg-white/10 hover:bg-white/20 transition">
+                            Tutup
+                        </button>
+                    </div>
+
+                    <div class="flex-1 p-4 overflow-y-auto md:p-5">
+                        <form id="rawGenerateForm" class="space-y-4">
+                            @csrf
+
+                            <div class="space-y-2">
+                                <label for="available_skins_raw"
+                                    class="text-xs font-semibold tracking-wide uppercase text-cyan-300">Available Skins
+                                    (satu nama per baris)</label>
+                                <textarea id="available_skins_raw" name="available_skins_raw" rows="6" required
+                                    class="w-full px-3 py-2 text-sm text-white transition bg-gray-800 border-2 border-gray-700 rounded-lg outline-none md:text-base focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/40"
+                                    placeholder="Kuronami Sheriff&#10;Prelude to Chaos Vandal&#10;Araxys 2.0 Melee&#10;Ion Phantom&#10;Prime Vandal"></textarea>
+                            </div>
+
+                            <div class="grid grid-cols-1 gap-3 md:grid-cols-3">
+                                <div class="space-y-2">
+                                    <label for="raw_price"
+                                        class="text-xs font-semibold tracking-wide uppercase text-cyan-300">Price</label>
+                                    <input type="number" id="raw_price" name="price" min="0"
+                                        max="10000" step="1" required
+                                        class="w-full px-3 py-2 text-sm text-white transition bg-gray-800 border-2 border-gray-700 rounded-lg outline-none md:text-base focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/40"
+                                        placeholder="1600">
+                                </div>
+                                <div class="space-y-2">
+                                    <label for="raw_rarity"
+                                        class="text-xs font-semibold tracking-wide uppercase text-cyan-300">Rarity
+                                        (1-5)</label>
+                                    <input type="number" id="raw_rarity" name="rarity" min="1"
+                                        max="5" step="1" required
+                                        class="w-full px-3 py-2 text-sm text-white transition bg-gray-800 border-2 border-gray-700 rounded-lg outline-none md:text-base focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/40"
+                                        placeholder="3">
+                                </div>
+                                <div class="space-y-2">
+                                    <label for="raw_vfx"
+                                        class="text-xs font-semibold tracking-wide uppercase text-cyan-300">VFX</label>
+                                    <input type="number" id="raw_vfx" name="vfx" min="0"
+                                        max="10" step="0.1" required
+                                        class="w-full px-3 py-2 text-sm text-white transition bg-gray-800 border-2 border-gray-700 rounded-lg outline-none md:text-base focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/40"
+                                        placeholder="7.5">
+                                </div>
+                            </div>
+
+                            <div class="flex gap-3 pt-2">
+                                <button type="submit"
+                                    class="flex-1 px-4 py-2.5 text-sm md:text-base bg-gradient-to-r from-cyan-600 to-cyan-700 text-white rounded-lg font-semibold hover:shadow-lg hover:shadow-cyan-500/40 transition">
+                                    Generate
+                                </button>
+                                <button type="button" id="rawResetBtn"
+                                    class="px-4 py-2.5 text-sm md:text-base border-2 border-gray-600 text-gray-300 rounded-lg font-semibold hover:bg-gray-800 transition">
+                                    Reset
+                                </button>
+                            </div>
+                        </form>
+
+                        <div id="rawProgressSection" class="hidden mt-4">
+                            <div class="h-3 overflow-hidden bg-gray-700 rounded-full">
+                                <div id="rawProgressBar"
+                                    class="h-full transition-all duration-500 bg-gradient-to-r from-cyan-600 to-cyan-700"
+                                    style="width: 0%"></div>
+                            </div>
+                            <p id="rawProgressText" class="mt-2 text-sm text-center text-gray-300">Mengirim request
+                                raw...</p>
+                        </div>
+
+                        <div id="rawResultSection"
+                            class="hidden p-4 mt-4 border rounded-lg bg-gray-800/80 border-cyan-500/40">
+                            <h5 class="mb-2 text-sm font-semibold text-cyan-300 md:text-base">Hasil Generator Raw</h5>
+                            <div id="rawResultText" class="space-y-2 text-sm text-gray-100"></div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
 
             <!-- Features -->
             <div class="grid gap-4 mt-12 md:grid-cols-3 md:gap-8 md:mt-20">
@@ -943,6 +1021,63 @@
         const resetBtn = document.getElementById('resetBtn');
         const tryAgainBtn = document.getElementById('tryAgainBtn');
         const saveBtn = document.getElementById('saveBtn');
+        const openRawGeneratorBtn = document.getElementById('openRawGeneratorBtn');
+        const closeRawGeneratorBtn = document.getElementById('closeRawGeneratorBtn');
+        const rawGeneratorBackdrop = document.getElementById('rawGeneratorBackdrop');
+        const rawGeneratorPanel = document.getElementById('rawGeneratorPanel');
+        const rawGenerateForm = document.getElementById('rawGenerateForm');
+        const rawResetBtn = document.getElementById('rawResetBtn');
+        const rawProgressSection = document.getElementById('rawProgressSection');
+        const rawProgressBar = document.getElementById('rawProgressBar');
+        const rawProgressText = document.getElementById('rawProgressText');
+        const rawResultSection = document.getElementById('rawResultSection');
+        const rawResultText = document.getElementById('rawResultText');
+
+        const escapeHtml = (text) => String(text)
+            .replaceAll('&', '&amp;')
+            .replaceAll('<', '&lt;')
+            .replaceAll('>', '&gt;')
+            .replaceAll('"', '&quot;')
+            .replaceAll("'", '&#39;');
+
+        const sanitizeSkinInputLine = (text) => String(text)
+            .replaceAll('&quot;', '"')
+            .replaceAll('&#34;', '"')
+            .replaceAll('&apos;', "'")
+            .replaceAll('&#39;', "'")
+            .replace(/<[^>]*>/g, ' ')
+            .replace(/["']/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim();
+
+        const normalizeSkinKey = (text) => sanitizeSkinInputLine(text)
+            .toLowerCase()
+            .replace(/\s+/g, ' ')
+            .trim();
+
+        function openRawGenerator() {
+            rawGeneratorBackdrop.classList.remove('hidden');
+            rawGeneratorPanel.classList.remove('translate-x-full');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeRawGenerator() {
+            rawGeneratorPanel.classList.add('translate-x-full');
+            rawGeneratorBackdrop.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        if (openRawGeneratorBtn) {
+            openRawGeneratorBtn.addEventListener('click', openRawGenerator);
+        }
+
+        if (closeRawGeneratorBtn) {
+            closeRawGeneratorBtn.addEventListener('click', closeRawGenerator);
+        }
+
+        if (rawGeneratorBackdrop) {
+            rawGeneratorBackdrop.addEventListener('click', closeRawGenerator);
+        }
 
         generateDataForm.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -956,8 +1091,6 @@
             // Get form data
             const formData = new FormData(generateDataForm);
             const weapon = formData.get('weapon');
-            const weaponName = document.getElementById('weapon').options[document.getElementById('weapon')
-                .selectedIndex].text;
             const price = formData.get('price');
             const vfx = formData.get('vfx');
             const rarity = formData.get('rarity');
@@ -1018,7 +1151,6 @@
 
                 const recommendations = result.recommendations ?? [];
                 const recommendationList = Array.isArray(recommendations) ? recommendations : [];
-                const normalizedInput = result.normalized_input ?? {};
 
                 setTimeout(() => {
                     progressSection.classList.add('hidden');
@@ -1030,48 +1162,28 @@
                                 <h5 class="mb-3 text-xl font-bold text-green-400">Top ${recommendationList.length} Rekomendasi Skin</h5>
                                 <div class="space-y-2 text-gray-100">
                                     ${recommendationList.map((item, index) => `
-                                                    <div class="flex items-start justify-between p-3 bg-gray-900 border border-gray-700 rounded-lg">
-                                                        <div class="pr-3">
-                                                            <p class="font-semibold text-white">#${index + 1} ${item.skin_name ?? item.name ?? 'Unnamed Skin'}</p>
-                                                            <p class="text-xs text-gray-400">Weapon: ${item.weapon ?? '-'} | ${item.rarity_name ?? 'Rarity -'}</p>
-                                                            <p class="text-xs text-gray-400">Price: ${item.price ?? '-'} | VFX: ${item.vfx ?? '-'} | Rarity: ${item.rarity ?? '-'}</p>
-                                                        </div>
-                                                        <div class="text-right">
-                                                            <p class="text-sm font-semibold text-cyan-400">${item.match_percentage ?? (item.similarity_score !== undefined ? `${Number(item.similarity_score).toFixed(1)}%` : '-')}</p>
-                                                            <p class="text-xs text-gray-400">ANFIS: ${item.predicted_score !== undefined ? Number(item.predicted_score).toFixed(2) : '-'}</p>
-                                                        </div>
-                                                    </div>
-                                                `).join('')}
+                                                                                <div class="flex items-start justify-between p-3 bg-gray-900 border border-gray-700 rounded-lg">
+                                                                                    <div class="pr-3">
+                                                                                        <p class="font-semibold text-white">#${index + 1} ${item.skin_name ?? item.name ?? 'Unnamed Skin'}</p>
+                                                                                        <p class="text-xs text-gray-400">Weapon: ${item.weapon ?? '-'} | ${item.rarity_name ?? 'Rarity -'}</p>
+                                                                                        <p class="text-xs text-gray-400">Price: ${item.price ?? '-'} | VFX: ${item.vfx ?? '-'} | Rarity: ${item.rarity ?? '-'}</p>
+                                                                                    </div>
+                                                                                    <div class="text-right">
+                                                                                        <p class="text-sm font-semibold text-cyan-400">${item.match_percentage ?? (item.similarity_score !== undefined ? `${Number(item.similarity_score).toFixed(1)}%` : '-')}</p>
+                                                                                        <p class="text-xs text-gray-400">ANFIS: ${item.predicted_score !== undefined ? Number(item.predicted_score).toFixed(2) : '-'}</p>
+                                                                                    </div>
+                                                                                </div>
+                                                                            `).join('')}
                                 </div>
                             </div>
                         `;
                     } else {
                         resultText.innerHTML = `
-                            <div class="p-3 text-sm border rounded-lg bg-yellow-900/20 border-yellow-500/40 text-yellow-300">
+                            <div class="p-3 text-sm text-yellow-300 border rounded-lg bg-yellow-900/20 border-yellow-500/40">
                                 Response diterima, tapi tidak ada data rekomendasi yang bisa ditampilkan.
                             </div>
                         `;
                     }
-
-                    const inputSummary = document.getElementById('inputSummary');
-                    inputSummary.innerHTML = `
-                        <div class="flex items-center gap-2">
-                            <span class="font-semibold text-red-600">⚔️ Weapon:</span>
-                            <span class="text-gray-300">${weaponName}</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <span class="font-semibold text-cyan-600">💰 Harga:</span>
-                            <span class="text-gray-300">${price} (norm: ${normalizedInput.price ?? '-'})</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <span class="font-semibold text-purple-600">✨ VFX:</span>
-                            <span class="text-gray-300">${vfx} (norm: ${normalizedInput.vfx ?? '-'})</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <span class="font-semibold text-yellow-600">⭐ Rarity:</span>
-                            <span class="text-gray-300">${rarity} (norm: ${normalizedInput.rarity ?? '-'})</span>
-                        </div>
-                    `;
 
                     resultSection.scrollIntoView({
                         behavior: 'smooth',
@@ -1083,11 +1195,10 @@
                 progressSection.classList.add('hidden');
                 resultSection.classList.remove('hidden');
                 resultText.innerHTML = `
-                    <div class="p-3 text-sm border rounded-lg bg-red-900/20 border-red-500/40 text-red-300">
+                    <div class="p-3 text-sm text-red-300 border rounded-lg bg-red-900/20 border-red-500/40">
                         ${error.message}
                     </div>
                 `;
-                document.getElementById('inputSummary').innerHTML = '';
             }
         });
 
@@ -1133,6 +1244,129 @@
 
                 // Show success message
                 alert('Hasil prediksi berhasil disimpan!');
+            });
+        }
+
+        if (rawGenerateForm) {
+            rawGenerateForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                if (!rawGenerateForm.checkValidity()) {
+                    rawGenerateForm.reportValidity();
+                    return;
+                }
+
+                const formData = new FormData(rawGenerateForm);
+                const availableSkinsInput = String(formData.get('available_skins_raw') || '')
+                    .replaceAll('&#10;', '\n')
+                    .replaceAll('\r\n', '\n');
+                const availableSkins = availableSkinsInput
+                    .split('\n')
+                    .map(item => sanitizeSkinInputLine(item))
+                    .filter(Boolean);
+
+                const uniqueAvailableSkins = [...new Set(availableSkins)];
+
+                if (availableSkins.length === 0) {
+                    rawResultSection.classList.remove('hidden');
+                    rawResultText.innerHTML =
+                        '<div class="p-3 text-sm text-red-300 border rounded-lg bg-red-900/20 border-red-500/40">Minimal isi satu nama skin di kolom Available Skins.</div>';
+                    return;
+                }
+
+                rawResultSection.classList.add('hidden');
+                rawProgressSection.classList.remove('hidden');
+                rawProgressBar.style.width = '20%';
+                rawProgressText.textContent = 'Menyiapkan payload raw...';
+
+                try {
+                    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                    rawProgressBar.style.width = '60%';
+                    rawProgressText.textContent = 'Mengirim request raw ke server...';
+
+                    const response = await fetch('/recommend/raw', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'X-CSRF-TOKEN': csrfToken,
+                        },
+                        body: JSON.stringify({
+                            available_skins: uniqueAvailableSkins,
+                            price: Number(formData.get('price')),
+                            rarity: Number(formData.get('rarity')),
+                            vfx: Number(formData.get('vfx')),
+                        }),
+                    });
+
+                    const result = await response.json();
+                    rawProgressBar.style.width = '100%';
+                    rawProgressText.textContent = 'Selesai';
+
+                    if (!response.ok || result.success === false) {
+                        throw new Error(result.message || 'Gagal mengambil rekomendasi raw dari server');
+                    }
+
+                    const recommendations = result.recommendations ?? result.data?.recommendations ?? [];
+                    const allowedSkinKeys = new Set(uniqueAvailableSkins.map(item => normalizeSkinKey(item)));
+                    const filteredRecommendations = Array.isArray(recommendations) ?
+                        recommendations.filter((item) => {
+                            const candidateName = item.skin_name ?? item.name ?? '';
+                            return allowedSkinKeys.has(normalizeSkinKey(candidateName));
+                        }) : [];
+
+                    rawResultSection.classList.remove('hidden');
+                    if (filteredRecommendations.length > 0) {
+                        rawResultText.innerHTML = `
+                            <div>
+                                <h6 class="mb-2 font-semibold text-cyan-300">Top ${filteredRecommendations.length} Rekomendasi</h6>
+                                <div class="space-y-2">
+                                    ${filteredRecommendations.map((item, index) => `
+                                                            <div class="p-3 bg-gray-900 border border-gray-700 rounded-lg">
+                                                                <p class="font-semibold text-white">#${index + 1} ${escapeHtml(item.skin_name ?? item.name ?? 'Unnamed Skin')}</p>
+                                                                <p class="text-xs text-gray-400">Weapon: ${escapeHtml(item.weapon ?? '-')} | Rarity: ${escapeHtml(item.rarity_name ?? item.rarity ?? '-')}</p>
+                                                                <p class="text-xs text-gray-400">Score: ${escapeHtml(item.match_percentage ?? item.predicted_score ?? item.similarity_score ?? '-')}</p>
+                                                            </div>
+                                                        `).join('')}
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        const hasNotFoundSkins = Array.isArray(result.not_found_skins) && result.not_found_skins
+                            .length > 0;
+                        const hasOutOfListRecommendations = Array.isArray(recommendations) && recommendations
+                            .length > 0 && filteredRecommendations.length === 0;
+                        const invalidInputMessage = hasNotFoundSkins ?
+                            'Input skin tidak cocok dengan data model. Pastikan nama skin sesuai store Valorant Anda dan isi satu nama per baris.' :
+                            (hasOutOfListRecommendations ?
+                                'Hasil model berada di luar daftar input raw, jadi tidak ditampilkan. Cek kembali nama skin yang Anda masukkan.' :
+                                'Input tidak valid atau tidak ada rekomendasi. Cek kembali format input Anda.');
+
+                        rawResultText.innerHTML = `
+                            <div class="p-3 text-sm text-yellow-300 border rounded-lg bg-yellow-900/20 border-yellow-500/40">
+                                ${escapeHtml(invalidInputMessage)}
+                            </div>
+                        `;
+                    }
+                } catch (error) {
+                    rawResultSection.classList.remove('hidden');
+                    rawResultText.innerHTML =
+                        `<div class="p-3 text-sm text-red-300 border rounded-lg bg-red-900/20 border-red-500/40">${escapeHtml(error.message)}</div>`;
+                } finally {
+                    setTimeout(() => {
+                        rawProgressSection.classList.add('hidden');
+                        rawProgressBar.style.width = '0%';
+                    }, 300);
+                }
+            });
+        }
+
+        if (rawResetBtn) {
+            rawResetBtn.addEventListener('click', () => {
+                rawGenerateForm.reset();
+                rawProgressSection.classList.add('hidden');
+                rawResultSection.classList.add('hidden');
+                rawProgressBar.style.width = '0%';
             });
         }
 
@@ -1187,15 +1421,15 @@
                                         ${skin.image_url
                                             ? `<img src="${skin.image_url}" alt="${skin.skin_name}" class="object-cover w-full h-full transition duration-300 hover:scale-110">`
                                             : `<div class="flex items-center justify-center h-full">
-                                                                                <svg class="w-20 h-20 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                                                                </svg>
-                                                                               </div>`
+                                                                                                            <svg class="w-20 h-20 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                                                                            </svg>
+                                                                                                           </div>`
                                         }
                                         ${skin.rarity
                                             ? `<div class="absolute px-3 py-1 text-xs font-semibold text-white rounded-full top-2 right-2 bg-gradient-to-r from-yellow-500 to-orange-500">
-                                                                                ${skin.rarity}
-                                                                               </div>`
+                                                                                                            ${skin.rarity}
+                                                                                                           </div>`
                                             : ''
                                         }
                                     </div>
@@ -1204,36 +1438,36 @@
                                         <div class="flex items-center justify-between mb-3">
                                             ${skin.price
                                                 ? `<span class="flex items-center text-sm font-semibold text-red-400">
-                                                                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                                                    </svg>
-                                                                                    ${skin.price} VP
-                                                                                   </span>`
+                                                                                                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                                                                                </svg>
+                                                                                                                ${skin.price} VP
+                                                                                                               </span>`
                                                 : '<span class="text-sm text-gray-400">Free</span>'
                                             }
                                             ${skin.vfx && isNaN(skin.vfx)
                                                 ? `<span class="px-2 py-1 text-xs font-medium rounded-full bg-cyan-500/20 text-cyan-400">
-                                                                                    ${skin.vfx}
-                                                                                   </span>`
+                                                                                                                ${skin.vfx}
+                                                                                                               </span>`
                                                 : ''
                                             }
                                         </div>
                                         ${skin.popularity
                                             ? `<div class="flex items-center mt-2">
-                                                                                <span class="mr-2 text-xs text-gray-400">Popularity:</span>
-                                                                                <div class="flex-1 h-2 overflow-hidden bg-gray-600 rounded-full">
-                                                                                    <div class="h-full transition-all duration-500 bg-gradient-to-r from-red-500 to-red-600"
-                                                                                         style="width: ${Math.min(100, parseFloat(skin.popularity))}%"></div>
-                                                                                </div>
-                                                                                <span class="ml-2 text-xs font-semibold text-gray-300">${parseFloat(skin.popularity).toFixed(1)}%</span>
-                                                                               </div>`
+                                                                                                            <span class="mr-2 text-xs text-gray-400">Popularity:</span>
+                                                                                                            <div class="flex-1 h-2 overflow-hidden bg-gray-600 rounded-full">
+                                                                                                                <div class="h-full transition-all duration-500 bg-gradient-to-r from-red-500 to-red-600"
+                                                                                                                     style="width: ${Math.min(100, parseFloat(skin.popularity))}%"></div>
+                                                                                                            </div>
+                                                                                                            <span class="ml-2 text-xs font-semibold text-gray-300">${parseFloat(skin.popularity).toFixed(1)}%</span>
+                                                                                                           </div>`
                                             : ''
                                         }
                                         ${skin.score
                                             ? `<div class="flex items-center justify-between mt-2 text-xs">
-                                                                                <span class="text-gray-400">Rating Score:</span>
-                                                                                <span class="font-semibold text-yellow-400">${parseFloat(skin.score).toFixed(2)}</span>
-                                                                               </div>`
+                                                                                                            <span class="text-gray-400">Rating Score:</span>
+                                                                                                            <span class="font-semibold text-yellow-400">${parseFloat(skin.score).toFixed(2)}</span>
+                                                                                                           </div>`
                                             : ''
                                         }
                                     </div>

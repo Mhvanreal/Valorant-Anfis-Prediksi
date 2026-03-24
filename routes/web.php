@@ -23,6 +23,7 @@ use App\Http\Controllers\RecommendationController;
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 Route::get('/api/weapons/{weapon}/skins', [WelcomeController::class, 'getWeaponSkins'])->name('api.weapon.skins');
 Route::post('/recommend', [RecommendationController::class, 'recommend'])->name('recommend');
+Route::post('/recommend/raw', [RecommendationController::class, 'recommendRaw'])->name('recommend.raw');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
