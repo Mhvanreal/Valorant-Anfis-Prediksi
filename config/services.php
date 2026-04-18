@@ -31,4 +31,8 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'fastapi' => [
+        'url' => env('FASTAPI_URL', 'http://127.0.0.1:8000'),
+    ],
+
 ];

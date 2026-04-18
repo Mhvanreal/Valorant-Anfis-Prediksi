@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WeaponController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\RecommendationController;
+use App\Http\Controllers\PredictionHistoryController;
 
 
 /*
@@ -24,12 +25,17 @@ Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 Route::get('/api/weapons/{weapon}/skins', [WelcomeController::class, 'getWeaponSkins'])->name('api.weapon.skins');
 Route::post('/recommend', [RecommendationController::class, 'recommend'])->name('recommend');
 Route::post('/recommend/raw', [RecommendationController::class, 'recommendRaw'])->name('recommend.raw');
+Route::post('/recommend/save', [RecommendationController::class, 'save'])->name('recommend.save');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/predictions', [PredictionHistoryController::class, 'index'])->name('predictions.index');
+    Route::patch('/predictions/{predictionHistory}/status', [PredictionHistoryController::class, 'updateStatus'])
+        ->name('predictions.status.update');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

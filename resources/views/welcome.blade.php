@@ -483,6 +483,7 @@
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -580,7 +581,6 @@
                     </div>
                 </div>
             </aside>
-
             <!-- Features -->
             <div class="grid gap-4 mt-12 md:grid-cols-3 md:gap-8 md:mt-20">
                 <div
@@ -642,16 +642,16 @@
 
             <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 md:gap-8">
                 @php
-                    $gradients = [
-                        'from-purple-400 via-pink-400 to-red-400',
-                        'from-red-600 via-red-500 to-red-700',
-                        'from-cyan-500 via-cyan-600 to-blue-600',
-                        'from-gray-700 via-gray-800 to-gray-900',
-                        'from-red-500 via-red-600 to-pink-600',
-                        'from-cyan-400 via-cyan-500 to-teal-600',
-                        'from-yellow-400 via-orange-500 to-red-500',
-                        'from-green-400 via-emerald-500 to-teal-500',
-                        'from-indigo-500 via-purple-500 to-pink-500',
+                    $cardBackgrounds = [
+                        'bg-slate-800',
+                        'bg-zinc-800',
+                        'bg-neutral-800',
+                        'bg-stone-800',
+                        'bg-gray-800',
+                        'bg-slate-700',
+                        'bg-zinc-700',
+                        'bg-neutral-700',
+                        'bg-stone-700',
                     ];
                 @endphp
 
@@ -661,7 +661,7 @@
                         data-weapon-id="{{ $weapon->id }}" data-weapon-name="{{ $weapon->name }}"
                         style="animation-delay: {{ $index * 100 }}ms">
                         <div
-                            class="flex items-center justify-center h-48 aspect-w-16 aspect-h-9 bg-gradient-to-br {{ $gradients[$index % count($gradients)] }} md:h-64">
+                            class="flex items-center justify-center h-48 aspect-w-16 aspect-h-9 {{ $cardBackgrounds[$index % count($cardBackgrounds)] }} border border-white/10 md:h-64">
                             <div class="text-center">
                                 <h2
                                     class="text-4xl font-bold text-white transition duration-300 md:text-5xl lg:text-6xl group-hover:scale-110">
@@ -671,15 +671,15 @@
                         </div>
                         <!-- Always visible weapon name at bottom -->
                         <div
-                            class="absolute bottom-0 left-0 right-0 p-4 transition duration-300 bg-gradient-to-t from-black/90 via-black/70 to-transparent md:p-6">
-                            <h3 class="mb-1 text-xl font-bold text-white md:text-2xl">{{ $weapon->name }}</h3>
+                            class="absolute bottom-0 left-0 right-0 p-4 transition duration-300 border-t bg-black/80 border-white/10 md:p-6">
+                            {{-- <h3 class="mb-1 text-xl font-bold text-white md:text-2xl">{{ $weapon->name }}</h3> --}}
                             <p class="text-sm text-gray-300 md:text-base">{{ $weapon->skins_count }} Skins</p>
                         </div>
                         <!-- Hover overlay with button -->
                         <div
                             class="absolute inset-0 flex items-center justify-center transition duration-300 bg-black bg-opacity-0 group-hover:bg-opacity-60">
                             <button
-                                class="px-6 py-3 text-sm font-semibold text-white transition transform scale-90 rounded-lg opacity-0 md:text-base bg-gradient-to-r from-red-600 to-red-700 group-hover:opacity-100 group-hover:scale-100 hover:shadow-lg hover:shadow-red-500/50">
+                                class="px-6 py-3 text-sm font-semibold text-white transition transform scale-90 bg-red-600 rounded-lg opacity-0 md:text-base group-hover:opacity-100 group-hover:scale-100 hover:bg-red-700 hover:shadow-lg hover:shadow-red-500/40">
                                 <svg class="inline-block w-5 h-5 mr-2" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -746,6 +746,56 @@
         </div>
     </div>
 
+    <!-- Prediction Detail Modal -->
+    <div id="predictionDetailModal" class="fixed inset-0 z-[90] hidden p-4 bg-black/60 backdrop-blur-sm">
+        <div class="flex items-start justify-center w-full min-h-full pt-20 pb-6 md:pt-24">
+            <div
+                class="relative w-[90vw] max-w-2xl max-h-[calc(100vh-7rem)] overflow-y-auto bg-gray-800 border border-gray-700 rounded-2xl shadow-2xl shadow-black/50">
+                <div
+                    class="flex items-start justify-between p-6 border-b bg-gradient-to-r from-cyan-700 to-cyan-900 border-cyan-500/30">
+                    <div>
+                        <h4 id="predictionDetailTitle" class="text-2xl font-extrabold text-white">Detail Skin</h4>
+                    </div>
+                    <button id="closePredictionDetailModal"
+                        class="p-2 text-white transition rounded-lg hover:bg-cyan-800/70">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="p-6">
+                    <div class="max-w-xl mx-auto text-center">
+                        <div class="overflow-hidden border border-gray-700 rounded-xl bg-gray-900/60">
+                            <img id="predictionDetailImage" src="" alt="Skin Image"
+                                class="object-contain w-full h-[260px] max-h-[300px]">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 gap-4 mt-6 text-sm md:grid-cols-2">
+                        <div class="space-y-3">
+                            <p class="text-gray-300">Senjata: <span id="predictionDetailWeapon"
+                                    class="font-semibold text-white">-</span></p>
+                            <p class="text-gray-300">Harga: <span id="predictionDetailPrice"
+                                    class="font-semibold text-white">-</span></p>
+                            <p class="text-gray-300">Cocok: <span id="predictionDetailMatch"
+                                    class="font-bold text-emerald-400">-</span></p>
+                        </div>
+                        <div class="space-y-3">
+                            <p class="text-gray-300">Kelangkaan: <span id="predictionDetailRarity"
+                                    class="font-semibold text-white">-</span></p>
+                            <p class="text-gray-300">VFX: <span id="predictionDetailVfx"
+                                    class="font-semibold text-white">-</span></p>
+                            <p class="text-gray-300">ANFIS: <span id="predictionDetailScore"
+                                    class="font-semibold text-cyan-300">-</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- About Me Section -->
     <section id="aboutme" class="min-h-screen py-20 bg-gradient-to-br from-gray-800 via-gray-900 to-black">
         <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -785,7 +835,7 @@
                             </div>
                         </div>
 
-                        <div class="flex items-start space-x-4">
+                        {{-- <div class="flex items-start space-x-4">
                             <div class="flex-shrink-0">
                                 <div class="flex items-center justify-center w-12 h-12 rounded-full bg-cyan-500/20">
                                     <svg class="w-6 h-6 text-cyan-500" fill="none" stroke="currentColor"
@@ -795,11 +845,11 @@
                                     </svg>
                                 </div>
                             </div>
-                            <div>
+                            {{-- <div>
                                 <h4 class="text-lg font-semibold text-gray-100">Real-time Updates</h4>
                                 <p class="text-gray-300">Data selalu up-to-date dengan database terkini</p>
-                            </div>
-                        </div>
+                            </div> --}}
+                        {{-- </div>  --}}
 
                         <div class="flex items-start space-x-4">
                             <div class="flex-shrink-0">
@@ -847,7 +897,7 @@
                                                 d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                                 clip-rule="evenodd" />
                                         </svg>
-                                        Prediksi Skin Terpopuler
+                                        Analisis Skin Terpopuler
                                     </li>
                                     <li class="flex items-center">
                                         <svg class="w-5 h-5 mr-2 text-red-500" fill="currentColor"
@@ -1032,6 +1082,19 @@
         const rawProgressText = document.getElementById('rawProgressText');
         const rawResultSection = document.getElementById('rawResultSection');
         const rawResultText = document.getElementById('rawResultText');
+        const predictionDetailModal = document.getElementById('predictionDetailModal');
+        const closePredictionDetailModalBtn = document.getElementById('closePredictionDetailModal');
+        const predictionDetailTitle = document.getElementById('predictionDetailTitle');
+        const predictionDetailImage = document.getElementById('predictionDetailImage');
+        const predictionDetailWeapon = document.getElementById('predictionDetailWeapon');
+        const predictionDetailRarity = document.getElementById('predictionDetailRarity');
+        const predictionDetailPrice = document.getElementById('predictionDetailPrice');
+        const predictionDetailVfx = document.getElementById('predictionDetailVfx');
+        const predictionDetailMatch = document.getElementById('predictionDetailMatch');
+        const predictionDetailScore = document.getElementById('predictionDetailScore');
+        let latestPredictionPayload = null;
+        let latestPredictionAlreadySaved = false;
+        let latestRecommendationList = [];
 
         const escapeHtml = (text) => String(text)
             .replaceAll('&', '&amp;')
@@ -1054,6 +1117,36 @@
             .toLowerCase()
             .replace(/\s+/g, ' ')
             .trim();
+
+        function openPredictionDetailModal(item) {
+            predictionDetailTitle.textContent = item.skin_name ?? item.name ?? 'Unnamed Skin';
+
+            if (item.image_url) {
+                predictionDetailImage.src = item.image_url;
+                predictionDetailImage.alt = item.skin_name ?? 'Skin Image';
+            } else {
+                predictionDetailImage.src = 'https://via.placeholder.com/640x360?text=No+Image';
+                predictionDetailImage.alt = 'No Image';
+            }
+
+            predictionDetailWeapon.textContent = item.weapon ?? '-';
+            predictionDetailRarity.textContent = item.rarity_name ?? item.rarity ?? '-';
+            predictionDetailPrice.textContent = item.price ?? '-';
+            predictionDetailVfx.textContent = item.vfx ?? '-';
+            predictionDetailMatch.textContent = item.match_percentage ??
+                (item.similarity_score !== undefined ? `${Number(item.similarity_score).toFixed(1)}%` : '-');
+            predictionDetailScore.textContent = item.predicted_score !== undefined ?
+                Number(item.predicted_score).toFixed(2) : '-';
+
+            predictionDetailModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePredictionDetailModal() {
+            predictionDetailModal.classList.add('hidden');
+            predictionDetailImage.src = '';
+            document.body.style.overflow = 'auto';
+        }
 
         function openRawGenerator() {
             rawGeneratorBackdrop.classList.remove('hidden');
@@ -1079,8 +1172,45 @@
             rawGeneratorBackdrop.addEventListener('click', closeRawGenerator);
         }
 
+        async function persistLatestPrediction(showAlertOnSuccess = true) {
+            if (!latestPredictionPayload) {
+                if (showAlertOnSuccess) {
+                    alert('Belum ada hasil prediksi yang bisa disimpan. Silakan generate terlebih dahulu.');
+                }
+                return {
+                    success: false,
+                    message: 'Belum ada payload prediksi.',
+                };
+            }
+
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            const response = await fetch('/recommend/save', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                body: JSON.stringify(latestPredictionPayload),
+            });
+
+            const saveResult = await response.json();
+            if (!response.ok || saveResult.success !== true) {
+                throw new Error(saveResult.message || 'Gagal menyimpan hasil prediksi ke database.');
+            }
+
+            if (showAlertOnSuccess) {
+                alert('Hasil prediksi berhasil disimpan ke database!');
+            }
+
+            return saveResult;
+        }
+
         generateDataForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            latestPredictionPayload = null;
+            latestPredictionAlreadySaved = false;
+            latestRecommendationList = [];
 
             // Validate form
             if (!generateDataForm.checkValidity()) {
@@ -1151,6 +1281,28 @@
 
                 const recommendations = result.recommendations ?? [];
                 const recommendationList = Array.isArray(recommendations) ? recommendations : [];
+                latestRecommendationList = recommendationList;
+
+                latestPredictionPayload = {
+                    input: {
+                        weapon,
+                        price: Number(price),
+                        vfx: Number(vfx),
+                        rarity,
+                        top_n: 3,
+                    },
+                    output: result,
+                };
+
+                let autoSaveMessage;
+                if (result.history_saved === true) {
+                    latestPredictionAlreadySaved = true;
+                    autoSaveMessage =
+                        '<div class="p-3 text-sm text-green-300 border rounded-lg bg-green-900/20 border-green-500/40">Prediksi berhasil dan otomatis tersimpan ke database.</div>';
+                } else {
+                    autoSaveMessage =
+                        `<div class="p-3 text-sm text-yellow-300 border rounded-lg bg-yellow-900/20 border-yellow-500/40">Prediksi berhasil, tetapi auto-save gagal: ${escapeHtml(result.history_save_error || 'Silakan klik tombol Simpan Hasil.')}</div>`;
+                }
 
                 setTimeout(() => {
                     progressSection.classList.add('hidden');
@@ -1160,25 +1312,30 @@
                         resultText.innerHTML = `
                             <div>
                                 <h5 class="mb-3 text-xl font-bold text-green-400">Top ${recommendationList.length} Rekomendasi Skin</h5>
+                                <div class="mb-3">${autoSaveMessage}</div>
                                 <div class="space-y-2 text-gray-100">
                                     ${recommendationList.map((item, index) => `
-                                                                                <div class="flex items-start justify-between p-3 bg-gray-900 border border-gray-700 rounded-lg">
-                                                                                    <div class="pr-3">
-                                                                                        <p class="font-semibold text-white">#${index + 1} ${item.skin_name ?? item.name ?? 'Unnamed Skin'}</p>
-                                                                                        <p class="text-xs text-gray-400">Weapon: ${item.weapon ?? '-'} | ${item.rarity_name ?? 'Rarity -'}</p>
-                                                                                        <p class="text-xs text-gray-400">Price: ${item.price ?? '-'} | VFX: ${item.vfx ?? '-'} | Rarity: ${item.rarity ?? '-'}</p>
-                                                                                    </div>
-                                                                                    <div class="text-right">
-                                                                                        <p class="text-sm font-semibold text-cyan-400">${item.match_percentage ?? (item.similarity_score !== undefined ? `${Number(item.similarity_score).toFixed(1)}%` : '-')}</p>
-                                                                                        <p class="text-xs text-gray-400">ANFIS: ${item.predicted_score !== undefined ? Number(item.predicted_score).toFixed(2) : '-'}</p>
-                                                                                    </div>
-                                                                                </div>
-                                                                            `).join('')}
+                                                                                                                <div class="flex items-start justify-between p-3 bg-gray-900 border border-gray-700 rounded-lg">
+                                                                                                                    <div class="pr-3">
+                                                                                                                        <p class="font-semibold text-white">#${index + 1} ${item.skin_name ?? item.name ?? 'Unnamed Skin'}</p>
+                                                                                                                        <p class="text-xs text-gray-400">Weapon: ${item.weapon ?? '-'} | ${item.rarity_name ?? 'Rarity -'}</p>
+                                                                                                                        <p class="text-xs text-gray-400">Price: ${item.price ?? '-'} | VFX: ${item.vfx ?? '-'} | Rarity: ${item.rarity ?? '-'}</p>
+                                                                                                                        <button type="button" class="inline-flex items-center px-3 py-1 mt-2 text-xs font-semibold text-white transition rounded-lg prediction-detail-btn bg-cyan-600 hover:bg-cyan-700" data-index="${index}">
+                                                                                                                            Detail
+                                                                                                                        </button>
+                                                                                                                    </div>
+                                                                                                                    <div class="text-right">
+                                                                                                                        <p class="text-sm font-semibold text-cyan-400">${item.match_percentage ?? (item.similarity_score !== undefined ? `${Number(item.similarity_score).toFixed(1)}%` : '-')}</p>
+                                                                                                                        <p class="text-xs text-gray-400">ANFIS: ${item.predicted_score !== undefined ? Number(item.predicted_score).toFixed(2) : '-'}</p>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            `).join('')}
                                 </div>
                             </div>
                         `;
                     } else {
                         resultText.innerHTML = `
+                            <div class="mb-3">${autoSaveMessage}</div>
                             <div class="p-3 text-sm text-yellow-300 border rounded-lg bg-yellow-900/20 border-yellow-500/40">
                                 Response diterima, tapi tidak ada data rekomendasi yang bisa ditampilkan.
                             </div>
@@ -1223,27 +1380,23 @@
 
         // Save button handler
         if (saveBtn) {
-            saveBtn.addEventListener('click', () => {
-                const formData = new FormData(generateDataForm);
-                const resultData = {
-                    timestamp: new Date().toISOString(),
-                    input: {
-                        price: formData.get('price'),
-                        vfx: formData.get('vfx'),
-                        rarity: formData.get('rarity'),
-                    },
-                    prediction: {
-                        html: document.getElementById('resultText').innerHTML
+            saveBtn.addEventListener('click', async () => {
+                try {
+                    if (latestPredictionAlreadySaved) {
+                        alert('Hasil prediksi ini sudah tersimpan. Tidak perlu simpan ulang.');
+                        return;
                     }
-                };
 
-                // Save to localStorage
-                const savedResults = JSON.parse(localStorage.getItem('predictionHistory') || '[]');
-                savedResults.push(resultData);
-                localStorage.setItem('predictionHistory', JSON.stringify(savedResults));
-
-                // Show success message
-                alert('Hasil prediksi berhasil disimpan!');
+                    saveBtn.disabled = true;
+                    saveBtn.classList.add('opacity-70', 'cursor-not-allowed');
+                    await persistLatestPrediction(true);
+                    latestPredictionAlreadySaved = true;
+                } catch (error) {
+                    alert(error.message || 'Terjadi kesalahan saat menyimpan data.');
+                } finally {
+                    saveBtn.disabled = false;
+                    saveBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+                }
             });
         }
 
@@ -1322,12 +1475,12 @@
                                 <h6 class="mb-2 font-semibold text-cyan-300">Top ${filteredRecommendations.length} Rekomendasi</h6>
                                 <div class="space-y-2">
                                     ${filteredRecommendations.map((item, index) => `
-                                                            <div class="p-3 bg-gray-900 border border-gray-700 rounded-lg">
-                                                                <p class="font-semibold text-white">#${index + 1} ${escapeHtml(item.skin_name ?? item.name ?? 'Unnamed Skin')}</p>
-                                                                <p class="text-xs text-gray-400">Weapon: ${escapeHtml(item.weapon ?? '-')} | Rarity: ${escapeHtml(item.rarity_name ?? item.rarity ?? '-')}</p>
-                                                                <p class="text-xs text-gray-400">Score: ${escapeHtml(item.match_percentage ?? item.predicted_score ?? item.similarity_score ?? '-')}</p>
-                                                            </div>
-                                                        `).join('')}
+                                                                                            <div class="p-3 bg-gray-900 border border-gray-700 rounded-lg">
+                                                                                                <p class="font-semibold text-white">#${index + 1} ${escapeHtml(item.skin_name ?? item.name ?? 'Unnamed Skin')}</p>
+                                                                                                <p class="text-xs text-gray-400">Weapon: ${escapeHtml(item.weapon ?? '-')} | Rarity: ${escapeHtml(item.rarity_name ?? item.rarity ?? '-')}</p>
+                                                                                                <p class="text-xs text-gray-400">Score: ${escapeHtml(item.match_percentage ?? item.predicted_score ?? item.similarity_score ?? '-')}</p>
+                                                                                            </div>
+                                                                                        `).join('')}
                                 </div>
                             </div>
                         `;
@@ -1367,6 +1520,34 @@
                 rawProgressSection.classList.add('hidden');
                 rawResultSection.classList.add('hidden');
                 rawProgressBar.style.width = '0%';
+            });
+        }
+
+        if (resultText) {
+            resultText.addEventListener('click', (event) => {
+                const detailButton = event.target.closest('.prediction-detail-btn');
+                if (!detailButton) {
+                    return;
+                }
+
+                const index = Number(detailButton.dataset.index);
+                if (!Number.isInteger(index) || !latestRecommendationList[index]) {
+                    return;
+                }
+
+                openPredictionDetailModal(latestRecommendationList[index]);
+            });
+        }
+
+        if (closePredictionDetailModalBtn) {
+            closePredictionDetailModalBtn.addEventListener('click', closePredictionDetailModal);
+        }
+
+        if (predictionDetailModal) {
+            predictionDetailModal.addEventListener('click', function(e) {
+                if (e.target === predictionDetailModal) {
+                    closePredictionDetailModal();
+                }
             });
         }
 
@@ -1421,15 +1602,15 @@
                                         ${skin.image_url
                                             ? `<img src="${skin.image_url}" alt="${skin.skin_name}" class="object-cover w-full h-full transition duration-300 hover:scale-110">`
                                             : `<div class="flex items-center justify-center h-full">
-                                                                                                            <svg class="w-20 h-20 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                                                                                            </svg>
-                                                                                                           </div>`
+                                                                                                                                            <svg class="w-20 h-20 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                                                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                                                                                                            </svg>
+                                                                                                                                           </div>`
                                         }
                                         ${skin.rarity
                                             ? `<div class="absolute px-3 py-1 text-xs font-semibold text-white rounded-full top-2 right-2 bg-gradient-to-r from-yellow-500 to-orange-500">
-                                                                                                            ${skin.rarity}
-                                                                                                           </div>`
+                                                                                                                                            ${skin.rarity}
+                                                                                                                                           </div>`
                                             : ''
                                         }
                                     </div>
@@ -1438,36 +1619,36 @@
                                         <div class="flex items-center justify-between mb-3">
                                             ${skin.price
                                                 ? `<span class="flex items-center text-sm font-semibold text-red-400">
-                                                                                                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                                                                                </svg>
-                                                                                                                ${skin.price} VP
-                                                                                                               </span>`
+                                                                                                                                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                                                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                                                                                                                </svg>
+                                                                                                                                                ${skin.price} VP
+                                                                                                                                               </span>`
                                                 : '<span class="text-sm text-gray-400">Free</span>'
                                             }
                                             ${skin.vfx && isNaN(skin.vfx)
                                                 ? `<span class="px-2 py-1 text-xs font-medium rounded-full bg-cyan-500/20 text-cyan-400">
-                                                                                                                ${skin.vfx}
-                                                                                                               </span>`
+                                                                                                                                                ${skin.vfx}
+                                                                                                                                               </span>`
                                                 : ''
                                             }
                                         </div>
                                         ${skin.popularity
                                             ? `<div class="flex items-center mt-2">
-                                                                                                            <span class="mr-2 text-xs text-gray-400">Popularity:</span>
-                                                                                                            <div class="flex-1 h-2 overflow-hidden bg-gray-600 rounded-full">
-                                                                                                                <div class="h-full transition-all duration-500 bg-gradient-to-r from-red-500 to-red-600"
-                                                                                                                     style="width: ${Math.min(100, parseFloat(skin.popularity))}%"></div>
-                                                                                                            </div>
-                                                                                                            <span class="ml-2 text-xs font-semibold text-gray-300">${parseFloat(skin.popularity).toFixed(1)}%</span>
-                                                                                                           </div>`
+                                                                                                                                            <span class="mr-2 text-xs text-gray-400">Popularity:</span>
+                                                                                                                                            <div class="flex-1 h-2 overflow-hidden bg-gray-600 rounded-full">
+                                                                                                                                                <div class="h-full transition-all duration-500 bg-gradient-to-r from-red-500 to-red-600"
+                                                                                                                                                     style="width: ${Math.min(100, parseFloat(skin.popularity))}%"></div>
+                                                                                                                                            </div>
+                                                                                                                                            <span class="ml-2 text-xs font-semibold text-gray-300">${parseFloat(skin.popularity).toFixed(1)}%</span>
+                                                                                                                                           </div>`
                                             : ''
                                         }
                                         ${skin.score
                                             ? `<div class="flex items-center justify-between mt-2 text-xs">
-                                                                                                            <span class="text-gray-400">Rating Score:</span>
-                                                                                                            <span class="font-semibold text-yellow-400">${parseFloat(skin.score).toFixed(2)}</span>
-                                                                                                           </div>`
+                                                                                                                                            <span class="text-gray-400">Rating Score:</span>
+                                                                                                                                            <span class="font-semibold text-yellow-400">${parseFloat(skin.score).toFixed(2)}</span>
+                                                                                                                                           </div>`
                                             : ''
                                         }
                                     </div>
@@ -1521,8 +1702,13 @@
 
         // Close modal with Escape key
         document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && !skinsModal.classList.contains('hidden')) {
-                closeModal();
+            if (e.key === 'Escape') {
+                if (!skinsModal.classList.contains('hidden')) {
+                    closeModal();
+                }
+                if (predictionDetailModal && !predictionDetailModal.classList.contains('hidden')) {
+                    closePredictionDetailModal();
+                }
             }
         });
     </script>

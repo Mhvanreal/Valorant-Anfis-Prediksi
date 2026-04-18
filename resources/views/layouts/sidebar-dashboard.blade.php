@@ -22,9 +22,11 @@
                 Dashboard
             </a>
 
-            <a href="#"
+            <a href="{{ route('predictions.index') }}"
                 class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
-                       text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                {{ request()->routeIs('predictions.*')
+                    ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400'
+                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">
                 <span class="text-xl material-icons">trending_up</span>
                 Predictions
             </a>
