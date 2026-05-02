@@ -357,8 +357,8 @@
                                     </label>
                                     <input type="number" id="vfx" name="vfx" required
                                         class="w-full px-3 py-2 text-sm text-white transition bg-gray-700 border-2 border-gray-600 rounded-lg outline-none md:px-4 md:py-3 md:text-base focus:border-red-500 focus:ring-2 focus:ring-red-500/50"
-                                        placeholder="semakin besar nilai semakin bagus efeknya" min="0"
-                                        max="10" step="0.1">
+                                        placeholder="semakin besar nilai semakin bagus efeknya" min="0" max="10"
+                                        step="0.1">
                                     <p class="text-xs text-gray-400">Range: 0 - 10 </p>
                                 </div>
 
@@ -366,8 +366,8 @@
                                 <div class="space-y-1.5 md:space-y-2">
                                     <label for="rarity"
                                         class="flex items-center block text-xs font-semibold text-gray-200 md:text-sm">
-                                        <svg class="w-4 h-4 md:w-5 md:h-5 mr-1.5 md:mr-2 text-yellow-400"
-                                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <svg class="w-4 h-4 md:w-5 md:h-5 mr-1.5 md:mr-2 text-yellow-400" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
                                         </svg>
@@ -410,8 +410,8 @@
                             <div class="flex gap-2 pt-3 md:gap-4 md:pt-4">
                                 <button type="submit"
                                     class="flex-1 px-4 py-2.5 md:px-8 md:py-4 text-sm md:text-base bg-gradient-to-r from-red-600 to-red-700 text-white rounded-lg font-semibold hover:shadow-xl hover:shadow-red-500/50 transform hover:scale-105 transition duration-300 flex items-center justify-center">
-                                    <svg class="w-4 h-4 md:w-5 md:h-5 mr-1.5 md:mr-2" fill="none"
-                                        stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="w-4 h-4 md:w-5 md:h-5 mr-1.5 md:mr-2" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M13 10V3L4 14h7v7l9-11h-7z" />
                                     </svg>
@@ -518,8 +518,8 @@
                                 <div class="space-y-2">
                                     <label for="raw_price"
                                         class="text-xs font-semibold tracking-wide uppercase text-cyan-300">Price</label>
-                                    <input type="number" id="raw_price" name="price" min="0"
-                                        max="10000" step="1" required
+                                    <input type="number" id="raw_price" name="price" min="0" max="10000" step="1"
+                                        required
                                         class="w-full px-3 py-2 text-sm text-white transition bg-gray-800 border-2 border-gray-700 rounded-lg outline-none md:text-base focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/40"
                                         placeholder="1600">
                                 </div>
@@ -527,16 +527,14 @@
                                     <label for="raw_rarity"
                                         class="text-xs font-semibold tracking-wide uppercase text-cyan-300">Rarity
                                         (1-5)</label>
-                                    <input type="number" id="raw_rarity" name="rarity" min="1"
-                                        max="5" step="1" required
+                                    <input type="number" id="raw_rarity" name="rarity" min="1" max="5" step="1" required
                                         class="w-full px-3 py-2 text-sm text-white transition bg-gray-800 border-2 border-gray-700 rounded-lg outline-none md:text-base focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/40"
                                         placeholder="3">
                                 </div>
                                 <div class="space-y-2">
                                     <label for="raw_vfx"
                                         class="text-xs font-semibold tracking-wide uppercase text-cyan-300">VFX</label>
-                                    <input type="number" id="raw_vfx" name="vfx" min="0"
-                                        max="10" step="0.1" required
+                                    <input type="number" id="raw_vfx" name="vfx" min="0" max="10" step="0.1" required
                                         class="w-full px-3 py-2 text-sm text-white transition bg-gray-800 border-2 border-gray-700 rounded-lg outline-none md:text-base focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/40"
                                         placeholder="7.5">
                                 </div>
@@ -700,8 +698,7 @@
     </section>
 
     <!-- Skins Modal -->
-    <div id="skinsModal"
-        class="fixed inset-0 z-50 flex items-center justify-center hidden p-4 bg-black bg-opacity-75">
+    <div id="skinsModal" class="fixed inset-0 z-50 flex items-center justify-center hidden p-4 bg-black bg-opacity-75">
         <div class="relative w-full max-w-6xl max-h-screen overflow-hidden bg-gray-800 rounded-2xl">
             <!-- Modal Header -->
             <div
@@ -724,8 +721,8 @@
                     <!-- Loading State -->
                     <div class="flex items-center justify-center col-span-full">
                         <div class="text-center">
-                            <svg class="w-12 h-12 mx-auto text-red-500 animate-spin" fill="none"
-                                stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-12 h-12 mx-auto text-red-500 animate-spin" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                             </svg>
@@ -838,7 +835,8 @@
                                 <h4 class="text-lg font-semibold text-gray-100">Real-time Updates</h4>
                                 <p class="text-gray-300">Data selalu up-to-date dengan database terkini</p>
                             </div> --}}
-                        {{-- </div>  --}}
+                            {{--
+                        </div> --}}
 
                         <div class="flex items-start space-x-4">
                             <div class="flex-shrink-0">
@@ -880,8 +878,7 @@
                                 <h4 class="mb-2 text-lg font-semibold text-gray-100">Fitur Utama</h4>
                                 <ul class="space-y-2 text-gray-300">
                                     <li class="flex items-center">
-                                        <svg class="w-5 h-5 mr-2 text-red-500" fill="currentColor"
-                                            viewBox="0 0 20 20">
+                                        <svg class="w-5 h-5 mr-2 text-red-500" fill="currentColor" viewBox="0 0 20 20">
                                             <path fill-rule="evenodd"
                                                 d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                                 clip-rule="evenodd" />
@@ -889,8 +886,7 @@
                                         Analisis Skin Terpopuler
                                     </li>
                                     <li class="flex items-center">
-                                        <svg class="w-5 h-5 mr-2 text-red-500" fill="currentColor"
-                                            viewBox="0 0 20 20">
+                                        <svg class="w-5 h-5 mr-2 text-red-500" fill="currentColor" viewBox="0 0 20 20">
                                             <path fill-rule="evenodd"
                                                 d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                                 clip-rule="evenodd" />
@@ -898,8 +894,7 @@
                                         Analisis Tren Bulanan
                                     </li>
                                     <li class="flex items-center">
-                                        <svg class="w-5 h-5 mr-2 text-red-500" fill="currentColor"
-                                            viewBox="0 0 20 20">
+                                        <svg class="w-5 h-5 mr-2 text-red-500" fill="currentColor" viewBox="0 0 20 20">
                                             <path fill-rule="evenodd"
                                                 d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                                 clip-rule="evenodd" />
@@ -907,8 +902,7 @@
                                         Rekomendasi Personal
                                     </li>
                                     <li class="flex items-center">
-                                        <svg class="w-5 h-5 mr-2 text-red-500" fill="currentColor"
-                                            viewBox="0 0 20 20">
+                                        <svg class="w-5 h-5 mr-2 text-red-500" fill="currentColor" viewBox="0 0 20 20">
                                             <path fill-rule="evenodd"
                                                 d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                                 clip-rule="evenodd" />
@@ -995,7 +989,7 @@
 
         // Smooth scroll for navigation links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
+            anchor.addEventListener('click', function (e) {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
                 if (target) {
@@ -1203,6 +1197,7 @@
                 const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
                 const response = await fetch('/recommend', {
                     method: 'POST',
+                    credentials: 'same-origin',
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
@@ -1456,7 +1451,7 @@
         }
 
         if (predictionDetailModal) {
-            predictionDetailModal.addEventListener('click', function(e) {
+            predictionDetailModal.addEventListener('click', function (e) {
                 if (e.target === predictionDetailModal) {
                     closePredictionDetailModal();
                 }
@@ -1470,7 +1465,7 @@
 
         // Open modal and fetch skins when weapon card is clicked
         weaponCards.forEach(card => {
-            card.addEventListener('click', async function() {
+            card.addEventListener('click', async function () {
                 const weaponId = this.dataset.weaponId;
                 const weaponName = this.dataset.weaponName;
 
@@ -1512,41 +1507,41 @@
                                      style="animation: scaleIn 0.5s ease-out ${index * 50}ms both">
                                     <div class="relative h-48 overflow-hidden bg-gradient-to-br from-gray-600 to-gray-800">
                                         ${skin.image_url
-                                            ? `<img src="${skin.image_url}" alt="${skin.skin_name}" class="object-cover w-full h-full transition duration-300 hover:scale-110">`
-                                            : `<div class="flex items-center justify-center h-full">
+                                    ? `<img src="${skin.image_url}" alt="${skin.skin_name}" class="object-cover w-full h-full transition duration-300 hover:scale-110">`
+                                    : `<div class="flex items-center justify-center h-full">
                                                                                                                                             <svg class="w-20 h-20 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                                                                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                                                                                                                             </svg>
                                                                                                                                            </div>`
-                                        }
+                                }
                                         ${skin.rarity
-                                            ? `<div class="absolute px-3 py-1 text-xs font-semibold text-white rounded-full top-2 right-2 bg-gradient-to-r from-yellow-500 to-orange-500">
+                                    ? `<div class="absolute px-3 py-1 text-xs font-semibold text-white rounded-full top-2 right-2 bg-gradient-to-r from-yellow-500 to-orange-500">
                                                                                                                                             ${skin.rarity}
                                                                                                                                            </div>`
-                                            : ''
-                                        }
+                                    : ''
+                                }
                                     </div>
                                     <div class="p-4">
                                         <h4 class="mb-2 text-lg font-bold text-white line-clamp-2">${skin.skin_name || 'Unnamed Skin'}</h4>
                                         <div class="flex items-center justify-between mb-3">
                                             ${skin.price
-                                                ? `<span class="flex items-center text-sm font-semibold text-red-400">
+                                    ? `<span class="flex items-center text-sm font-semibold text-red-400">
                                                                                                                                                 <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                                                                                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                                                                                                                                 </svg>
                                                                                                                                                 ${skin.price} VP
                                                                                                                                                </span>`
-                                                : '<span class="text-sm text-gray-400">Free</span>'
-                                            }
+                                    : '<span class="text-sm text-gray-400">Free</span>'
+                                }
                                             ${skin.vfx && isNaN(skin.vfx)
-                                                ? `<span class="px-2 py-1 text-xs font-medium rounded-full bg-cyan-500/20 text-cyan-400">
+                                    ? `<span class="px-2 py-1 text-xs font-medium rounded-full bg-cyan-500/20 text-cyan-400">
                                                                                                                                                 ${skin.vfx}
                                                                                                                                                </span>`
-                                                : ''
-                                            }
+                                    : ''
+                                }
                                         </div>
                                         ${skin.popularity
-                                            ? `<div class="flex items-center mt-2">
+                                    ? `<div class="flex items-center mt-2">
                                                                                                                                             <span class="mr-2 text-xs text-gray-400">Popularity:</span>
                                                                                                                                             <div class="flex-1 h-2 overflow-hidden bg-gray-600 rounded-full">
                                                                                                                                                 <div class="h-full transition-all duration-500 bg-gradient-to-r from-red-500 to-red-600"
@@ -1554,15 +1549,15 @@
                                                                                                                                             </div>
                                                                                                                                             <span class="ml-2 text-xs font-semibold text-gray-300">${parseFloat(skin.popularity).toFixed(1)}%</span>
                                                                                                                                            </div>`
-                                            : ''
-                                        }
+                                    : ''
+                                }
                                         ${skin.score
-                                            ? `<div class="flex items-center justify-between mt-2 text-xs">
+                                    ? `<div class="flex items-center justify-between mt-2 text-xs">
                                                                                                                                             <span class="text-gray-400">Rating Score:</span>
                                                                                                                                             <span class="font-semibold text-yellow-400">${parseFloat(skin.score).toFixed(2)}</span>
                                                                                                                                            </div>`
-                                            : ''
-                                        }
+                                    : ''
+                                }
                                     </div>
                                 </div>
                             `).join('');
@@ -1606,14 +1601,14 @@
         closeModalBtn.addEventListener('click', closeModal);
 
         // Close modal when clicking outside
-        skinsModal.addEventListener('click', function(e) {
+        skinsModal.addEventListener('click', function (e) {
             if (e.target === skinsModal) {
                 closeModal();
             }
         });
 
         // Close modal with Escape key
-        document.addEventListener('keydown', function(e) {
+        document.addEventListener('keydown', function (e) {
             if (e.key === 'Escape') {
                 if (!skinsModal.classList.contains('hidden')) {
                     closeModal();

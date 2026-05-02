@@ -6,7 +6,7 @@
     <div class="flex items-center justify-between mb-6">
         <div>
             <h1 class="text-2xl font-bold text-gray-900 dark:text-white">History Prediksi</h1>
-            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">Daftar hasil prediksi yang pernah Anda simpan</p>
+            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">Daftar hasil prediksi yang tersimpan dari pengunjung (guest) dan admin</p>
         </div>
     </div>
 
@@ -44,6 +44,9 @@
                         <th
                             class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase dark:text-gray-300">
                             Tanggal</th>
+                        <th
+                            class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase dark:text-gray-300">
+                            Pengguna</th>
                         <th
                             class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase dark:text-gray-300">
                             Weapon</th>
@@ -109,6 +112,13 @@
                             </td>
                             <td class="px-6 py-4 text-sm text-gray-900 whitespace-nowrap dark:text-gray-300">
                                 {{ $history->created_at?->timezone('Asia/Jakarta')->format('d M Y H:i') }}
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-900 whitespace-nowrap dark:text-gray-300">
+                                @php
+                                    $guestToken = is_string($history->guest_token ?? null) ? $history->guest_token : null;
+                                    $guestLabel = $guestToken ? 'Guest-' . substr($guestToken, 0, 8) : 'Guest';
+                                @endphp
+                                {{ $history->user_id ? 'Admin' : $guestLabel }}
                             </td>
                             <td class="px-6 py-4 text-sm text-gray-900 whitespace-nowrap dark:text-gray-300">
                                 {{ $history->weapon_name ?: '-' }}
@@ -182,13 +192,13 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="px-6 py-12 text-center">
+                            <td colspan="8" class="px-6 py-12 text-center">
                                 <div class="flex flex-col items-center justify-center">
                                     <span class="text-5xl text-gray-300 material-icons dark:text-gray-600">history</span>
                                     <p class="mt-4 text-sm font-medium text-gray-700 dark:text-gray-400">Belum ada history
                                         prediksi</p>
-                                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-500">Lakukan prediksi lalu simpan
-                                        hasilnya dari halaman utama</p>
+                                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-500">Lakukan prediksi dari halaman utama,
+                                        hasilnya akan tersimpan otomatis sebagai guest</p>
                                 </div>
                             </td>
                         </tr>

@@ -12,6 +12,28 @@ use Throwable;
 
 class RecommendationController extends Controller
 {
+    private function getOrCreateGuestToken(Request $request): array
+    {
+        $cached = $request->attributes->get('guest_token');
+        $cachedCreated = (bool) $request->attributes->get('guest_token_created', false);
+        if (is_string($cached) && preg_match('/^[a-f0-9]{32}$/i', $cached)) {
+            return [$cached, $cachedCreated];
+        }
+
+        $existing = $request->cookie('guest_token');
+        if (is_string($existing) && preg_match('/^[a-f0-9]{32}$/i', $existing)) {
+            $request->attributes->set('guest_token', $existing);
+            $request->attributes->set('guest_token_created', false);
+            return [$existing, false];
+        }
+
+        $generated = bin2hex(random_bytes(16));
+        $request->attributes->set('guest_token', $generated);
+        $request->attributes->set('guest_token_created', true);
+
+        return [$generated, true];
+    }
+
     private function persistPredictionHistory(Request $request, array $input, array $output): ?PredictionHistory
     {
         if (!Schema::hasTable('prediction_histories')) {
@@ -65,7 +87,9 @@ class RecommendationController extends Controller
             }
         }
 
-        return PredictionHistory::create([
+        [$guestToken] = $this->getOrCreateGuestToken($request);
+
+        $historyPayload = [
             'user_id' => $request->user()?->id,
             'weapon_id' => $weaponId,
             'weapon_name' => $weaponName,
@@ -85,8 +109,25 @@ class RecommendationController extends Controller
                 'summary' => [
                     'total_recommendations' => count($compactRecommendations),
                 ],
+                'guest' => [
+                    'token' => $guestToken,
+                ],
             ],
-        ]);
+        ];
+
+        if (Schema::hasColumn('prediction_histories', 'guest_token')) {
+            $historyPayload['guest_token'] = $guestToken;
+        }
+
+        if (Schema::hasColumn('prediction_histories', 'guest_ip')) {
+            $historyPayload['guest_ip'] = $request->ip();
+        }
+
+        if (Schema::hasColumn('prediction_histories', 'guest_user_agent')) {
+            $historyPayload['guest_user_agent'] = substr((string) $request->userAgent(), 0, 1000);
+        }
+
+        return PredictionHistory::create($historyPayload);
     }
 
     private function fastApiEndpoint(string $path): string
@@ -106,6 +147,8 @@ class RecommendationController extends Controller
 
     public function recommend(Request $request)
     {
+        [$guestToken, $guestTokenCreated] = $this->getOrCreateGuestToken($request);
+
         $priceMin = (float) env('INPUT_PRICE_MIN', 0);
         $priceMax = (float) env('INPUT_PRICE_MAX', 10000);
         $vfxMin = (float) env('INPUT_VFX_MIN', 0);
@@ -215,7 +258,14 @@ class RecommendationController extends Controller
                 $responseBody['history_save_error'] = 'Gagal menyimpan history prediksi.';
             }
 
-            return response()->json($responseBody, $response->status());
+            $jsonResponse = response()->json($responseBody, $response->status());
+            if ($guestTokenCreated) {
+                $jsonResponse->cookie(
+                    cookie('guest_token', $guestToken, 60 * 24 * 30, '/', null, false, true, false, 'Lax')
+                );
+            }
+
+            return $jsonResponse;
         }
 
         return response()->json([
@@ -289,6 +339,13 @@ class RecommendationController extends Controller
             ], 422);
         }
 
+        if (!$request->user()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'History prediksi hanya bisa disimpan saat user sudah login.',
+            ], 401);
+        }
+
         $priceMin = (float) env('INPUT_PRICE_MIN', 0);
         $priceMax = (float) env('INPUT_PRICE_MAX', 10000);
         $vfxMin = (float) env('INPUT_VFX_MIN', 0);
@@ -316,8 +373,8 @@ class RecommendationController extends Controller
         if (!$history) {
             return response()->json([
                 'success' => false,
-                'message' => 'Gagal menyimpan history prediksi.',
-            ], 500);
+                'message' => 'History prediksi hanya bisa disimpan saat user sudah login.',
+            ], 401);
         }
 
         return response()->json([

@@ -11,6 +11,9 @@ class PredictionHistory extends Model
 
     protected $fillable = [
         'user_id',
+        'guest_token',
+        'guest_ip',
+        'guest_user_agent',
         'weapon_id',
         'weapon_name',
         'input_price',

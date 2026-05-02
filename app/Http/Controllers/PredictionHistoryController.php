@@ -29,7 +29,6 @@ class PredictionHistoryController extends Controller
         }
 
         $histories = PredictionHistory::query()
-            ->where('user_id', $request->user()->id)
             ->latest()
             ->paginate($perPage);
 
@@ -41,10 +40,6 @@ class PredictionHistoryController extends Controller
 
     public function updateStatus(Request $request, PredictionHistory $predictionHistory)
     {
-        if ((int) $predictionHistory->user_id !== (int) $request->user()->id) {
-            abort(403);
-        }
-
         $validated = $request->validate([
             'status' => ['required', 'in:meleset,tidak_meleset'],
         ]);
