@@ -14,7 +14,7 @@ class RecommendationController extends Controller
 {
     private function persistPredictionHistory(Request $request, array $input, array $output): ?PredictionHistory
     {
-        if (!$request->user() || !Schema::hasTable('prediction_histories')) {
+        if (!Schema::hasTable('prediction_histories')) {
             return null;
         }
 
@@ -66,7 +66,7 @@ class RecommendationController extends Controller
         }
 
         return PredictionHistory::create([
-            'user_id' => $request->user()->id,
+            'user_id' => $request->user()?->id,
             'weapon_id' => $weaponId,
             'weapon_name' => $weaponName,
             'input_price' => (float) ($input['price'] ?? 0),
@@ -316,8 +316,8 @@ class RecommendationController extends Controller
         if (!$history) {
             return response()->json([
                 'success' => false,
-                'message' => 'History prediksi hanya bisa disimpan saat user sudah login.',
-            ], 401);
+                'message' => 'Gagal menyimpan history prediksi.',
+            ], 500);
         }
 
         return response()->json([

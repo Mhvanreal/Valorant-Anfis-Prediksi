@@ -470,15 +470,6 @@
                                             </svg>
                                             Coba Lagi
                                         </button>
-                                        <button id="saveBtn"
-                                            class="px-4 py-1.5 md:px-6 md:py-2 text-sm md:text-base bg-cyan-600 text-white rounded-lg font-semibold hover:bg-cyan-700 transition flex items-center">
-                                            <svg class="w-3.5 h-3.5 md:w-4 md:h-4 mr-1.5 md:mr-2" fill="none"
-                                                stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
-                                            </svg>
-                                            Simpan Hasil
-                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -787,8 +778,6 @@
                                     class="font-semibold text-white">-</span></p>
                             <p class="text-gray-300">VFX: <span id="predictionDetailVfx"
                                     class="font-semibold text-white">-</span></p>
-                            <p class="text-gray-300">ANFIS: <span id="predictionDetailScore"
-                                    class="font-semibold text-cyan-300">-</span></p>
                         </div>
                     </div>
                 </div>
@@ -1070,7 +1059,6 @@
         const resultText = document.getElementById('resultText');
         const resetBtn = document.getElementById('resetBtn');
         const tryAgainBtn = document.getElementById('tryAgainBtn');
-        const saveBtn = document.getElementById('saveBtn');
         const openRawGeneratorBtn = document.getElementById('openRawGeneratorBtn');
         const closeRawGeneratorBtn = document.getElementById('closeRawGeneratorBtn');
         const rawGeneratorBackdrop = document.getElementById('rawGeneratorBackdrop');
@@ -1091,9 +1079,6 @@
         const predictionDetailPrice = document.getElementById('predictionDetailPrice');
         const predictionDetailVfx = document.getElementById('predictionDetailVfx');
         const predictionDetailMatch = document.getElementById('predictionDetailMatch');
-        const predictionDetailScore = document.getElementById('predictionDetailScore');
-        let latestPredictionPayload = null;
-        let latestPredictionAlreadySaved = false;
         let latestRecommendationList = [];
 
         const escapeHtml = (text) => String(text)
@@ -1135,8 +1120,6 @@
             predictionDetailVfx.textContent = item.vfx ?? '-';
             predictionDetailMatch.textContent = item.match_percentage ??
                 (item.similarity_score !== undefined ? `${Number(item.similarity_score).toFixed(1)}%` : '-');
-            predictionDetailScore.textContent = item.predicted_score !== undefined ?
-                Number(item.predicted_score).toFixed(2) : '-';
 
             predictionDetailModal.classList.remove('hidden');
             document.body.style.overflow = 'hidden';
@@ -1172,44 +1155,8 @@
             rawGeneratorBackdrop.addEventListener('click', closeRawGenerator);
         }
 
-        async function persistLatestPrediction(showAlertOnSuccess = true) {
-            if (!latestPredictionPayload) {
-                if (showAlertOnSuccess) {
-                    alert('Belum ada hasil prediksi yang bisa disimpan. Silakan generate terlebih dahulu.');
-                }
-                return {
-                    success: false,
-                    message: 'Belum ada payload prediksi.',
-                };
-            }
-
-            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-            const response = await fetch('/recommend/save', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken,
-                },
-                body: JSON.stringify(latestPredictionPayload),
-            });
-
-            const saveResult = await response.json();
-            if (!response.ok || saveResult.success !== true) {
-                throw new Error(saveResult.message || 'Gagal menyimpan hasil prediksi ke database.');
-            }
-
-            if (showAlertOnSuccess) {
-                alert('Hasil prediksi berhasil disimpan ke database!');
-            }
-
-            return saveResult;
-        }
-
         generateDataForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            latestPredictionPayload = null;
-            latestPredictionAlreadySaved = false;
             latestRecommendationList = [];
 
             // Validate form
@@ -1283,25 +1230,13 @@
                 const recommendationList = Array.isArray(recommendations) ? recommendations : [];
                 latestRecommendationList = recommendationList;
 
-                latestPredictionPayload = {
-                    input: {
-                        weapon,
-                        price: Number(price),
-                        vfx: Number(vfx),
-                        rarity,
-                        top_n: 3,
-                    },
-                    output: result,
-                };
-
                 let autoSaveMessage;
                 if (result.history_saved === true) {
-                    latestPredictionAlreadySaved = true;
                     autoSaveMessage =
                         '<div class="p-3 text-sm text-green-300 border rounded-lg bg-green-900/20 border-green-500/40">Prediksi berhasil dan otomatis tersimpan ke database.</div>';
                 } else {
                     autoSaveMessage =
-                        `<div class="p-3 text-sm text-yellow-300 border rounded-lg bg-yellow-900/20 border-yellow-500/40">Prediksi berhasil, tetapi auto-save gagal: ${escapeHtml(result.history_save_error || 'Silakan klik tombol Simpan Hasil.')}</div>`;
+                        `<div class="p-3 text-sm text-yellow-300 border rounded-lg bg-yellow-900/20 border-yellow-500/40">Prediksi berhasil, tetapi auto-save gagal: ${escapeHtml(result.history_save_error || 'Silakan coba lagi.')}</div>`;
                 }
 
                 setTimeout(() => {
@@ -1326,7 +1261,6 @@
                                                                                                                     </div>
                                                                                                                     <div class="text-right">
                                                                                                                         <p class="text-sm font-semibold text-cyan-400">${item.match_percentage ?? (item.similarity_score !== undefined ? `${Number(item.similarity_score).toFixed(1)}%` : '-')}</p>
-                                                                                                                        <p class="text-xs text-gray-400">ANFIS: ${item.predicted_score !== undefined ? Number(item.predicted_score).toFixed(2) : '-'}</p>
                                                                                                                     </div>
                                                                                                                 </div>
                                                                                                             `).join('')}
@@ -1375,28 +1309,6 @@
                     behavior: 'smooth',
                     block: 'start'
                 });
-            });
-        }
-
-        // Save button handler
-        if (saveBtn) {
-            saveBtn.addEventListener('click', async () => {
-                try {
-                    if (latestPredictionAlreadySaved) {
-                        alert('Hasil prediksi ini sudah tersimpan. Tidak perlu simpan ulang.');
-                        return;
-                    }
-
-                    saveBtn.disabled = true;
-                    saveBtn.classList.add('opacity-70', 'cursor-not-allowed');
-                    await persistLatestPrediction(true);
-                    latestPredictionAlreadySaved = true;
-                } catch (error) {
-                    alert(error.message || 'Terjadi kesalahan saat menyimpan data.');
-                } finally {
-                    saveBtn.disabled = false;
-                    saveBtn.classList.remove('opacity-70', 'cursor-not-allowed');
-                }
             });
         }
 
