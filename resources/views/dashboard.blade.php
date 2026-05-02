@@ -2,16 +2,14 @@
 
 @section('content')
     @php
-        $userId = auth()->id();
         $hasPredictionTable = \Illuminate\Support\Facades\Schema::hasTable('prediction_histories');
 
-        $totalPrediksiSaya = $hasPredictionTable
-            ? \App\Models\PredictionHistory::where('user_id', $userId)->count()
+        $totalPredict = $hasPredictionTable
+            ? \App\Models\PredictionHistory::count()
             : 0;
 
         $prediksiHariIni = $hasPredictionTable
-            ? \App\Models\PredictionHistory::where('user_id', $userId)
-                ->whereDate('created_at', now()->toDateString())
+            ? \App\Models\PredictionHistory::whereDate('created_at', now()->toDateString())
                 ->count()
             : 0;
 
@@ -38,14 +36,14 @@
             <div class="p-6">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="mb-1 text-sm font-medium text-blue-100">Total Prediksi Saya</p>
-                        <h3 class="text-3xl font-bold text-white">{{ number_format($totalPrediksiSaya) }}</h3>
+                        <p class="mb-1 text-sm font-medium text-blue-100">Total Predict</p>
+                        <h3 class="text-3xl font-bold text-white">{{ number_format($totalPredict) }}</h3>
                         <p class="mt-2 text-xs text-blue-100">
-                            Total riwayat prediksi yang sudah Anda simpan
+                            Total prediksi yang tersimpan di sistem
                         </p>
                     </div>
                     <div
-                        class="flex items-center justify-center w-16 h-16 bg-white rounded-full shrink-0 aspect-square bg-opacity-20 backdrop-blur-sm">
+                        class="flex items-center justify-center w-16 h-16 min-w-16 min-h-16 bg-white rounded-full flex-none bg-opacity-20 backdrop-blur-sm">
                         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
@@ -65,11 +63,11 @@
                         <p class="mb-1 text-sm font-medium text-purple-100">Prediksi Hari Ini</p>
                         <h3 class="text-3xl font-bold text-white">{{ number_format($prediksiHariIni) }}</h3>
                         <p class="mt-2 text-xs text-purple-100">
-                            Jumlah prediksi yang Anda simpan hari ini
+                            Jumlah prediksi yang terjadi hari ini
                         </p>
                     </div>
                     <div
-                        class="flex items-center justify-center w-16 h-16 bg-white rounded-full shrink-0 aspect-square bg-opacity-20 backdrop-blur-sm">
+                        class="flex items-center justify-center w-16 h-16 min-w-16 min-h-16 bg-white rounded-full flex-none bg-opacity-20 backdrop-blur-sm">
                         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -93,7 +91,7 @@
                         </p>
                     </div>
                     <div
-                        class="flex items-center justify-center w-16 h-16 bg-white rounded-full shrink-0 aspect-square bg-opacity-20 backdrop-blur-sm">
+                        class="flex items-center justify-center w-16 h-16 min-w-16 min-h-16 bg-white rounded-full flex-none bg-opacity-20 backdrop-blur-sm">
                         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
@@ -117,7 +115,7 @@
                         </p>
                     </div>
                     <div
-                        class="flex items-center justify-center w-16 h-16 bg-white rounded-full shrink-0 aspect-square bg-opacity-20 backdrop-blur-sm">
+                        class="flex items-center justify-center w-16 h-16 min-w-16 min-h-16 bg-white rounded-full flex-none bg-opacity-20 backdrop-blur-sm">
                         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M13 10V3L4 14h7v7l9-11h-7z" />
