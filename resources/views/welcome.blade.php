@@ -1266,7 +1266,7 @@
                         price,
                         vfx,
                         rarity,
-                        top_n: 3,
+                        top_n: 10,
                     }),
                 });
 
