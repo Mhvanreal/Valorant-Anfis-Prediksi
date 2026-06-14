@@ -103,6 +103,43 @@
                     @enderror
                 </div>
 
+                <!-- VFX Score -->
+                <div>
+                    <label for="vfx" class="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
+                        Nilai VFX (Visual Effect)
+                    </label>
+                    <div class="flex items-center space-x-4">
+                        <input type="range" id="vfx_range"
+                            min="1" max="10" step="0.1"
+                            value="{{ old('vfx', $skin->vfx ?? 5) }}"
+                            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 accent-red-600"
+                            oninput="syncVfxInput(this.value)">
+                        <input type="number" id="vfx_number"
+                            min="1" max="10" step="0.1"
+                            value="{{ old('vfx', $skin->vfx ?? 5) }}"
+                            class="w-20 px-3 py-2 text-center text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white @error('vfx') border-red-500 @enderror"
+                            oninput="syncVfxRange(this.value)">
+                    </div>
+                    <input type="hidden" name="vfx" id="vfx" value="{{ old('vfx', $skin->vfx ?? 5) }}">
+                    @error('vfx')
+                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                    @enderror
+                    <div class="flex justify-between mt-1 text-xs text-gray-500 dark:text-gray-400">
+                        <span>1 — Tidak ada efek</span>
+                        <span class="font-medium text-red-600 dark:text-red-400">
+                            Nilai: <span id="vfx_display">{{ old('vfx', $skin->vfx ?? 5) }}</span>/10
+                        </span>
+                        <span>10 — Efek sangat intens</span>
+                    </div>
+                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                        <svg class="inline w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Penilaian efek visual skin: animasi, partikel, cahaya, dan efek khusus lainnya (skala 1–10)
+                    </p>
+                </div>
+
                 <!-- Current Image -->
                 @if ($skin->image_url)
                     <div>
@@ -199,6 +236,20 @@
 
     @push('scripts')
         <script>
+            function syncVfxInput(value) {
+                document.getElementById('vfx_number').value = value;
+                document.getElementById('vfx').value = value;
+                document.getElementById('vfx_display').textContent = value;
+            }
+
+            function syncVfxRange(value) {
+                const clamped = Math.min(10, Math.max(1, parseFloat(value) || 1));
+                const rounded = Math.round(clamped * 10) / 10;
+                document.getElementById('vfx_range').value = rounded;
+                document.getElementById('vfx').value = rounded;
+                document.getElementById('vfx_display').textContent = rounded;
+            }
+
             function toggleImageInput() {
                 const isUpload = document.getElementById('image_source_upload').checked;
                 const uploadContainer = document.getElementById('upload_input_container');

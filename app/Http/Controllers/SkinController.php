@@ -45,6 +45,7 @@ class SkinController extends Controller
             'skin_name' => 'required|string|max:255',
             'rarity' => 'required|string|max:100',
             'price' => 'required|numeric|min:0',
+            'vfx' => 'nullable|numeric|min:1|max:10',
             'image_file' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'image_url' => 'nullable|url|max:500',
         ]);
@@ -96,6 +97,7 @@ class SkinController extends Controller
             'skin_name' => 'required|string|max:255',
             'rarity' => 'required|string|max:100',
             'price' => 'required|numeric|min:0',
+            'vfx' => 'nullable|numeric|min:1|max:10',
             'image_file' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'image_url' => 'nullable|url|max:500',
         ]);

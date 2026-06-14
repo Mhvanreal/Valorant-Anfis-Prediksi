@@ -204,10 +204,13 @@ class SkinsImport implements ToModel, WithHeadingRow, WithValidation
     public function rules(): array
     {
         return [
-            'uuid' => 'required',
-            'weapon' => 'required',
+            'uuid'      => 'required',
+            'weapon'    => 'required',
             'skin_name' => 'required',
-            // kolom lain opsional
+            'price'     => 'nullable|numeric|min:0',
+            'vfx'       => 'nullable|numeric|min:1|max:10',
+            'popularity'=> 'nullable|numeric|min:0|max:10',
+            'score'     => 'nullable|numeric',
         ];
     }
 

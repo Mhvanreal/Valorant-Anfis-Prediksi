@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SkinController;
 use App\Http\Controllers\SkinImportController;
+use App\Http\Controllers\SkinScraperController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WeaponController;
 use App\Http\Controllers\WelcomeController;
@@ -48,6 +49,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/skins-import', [SkinImportController::class, 'showImportForm'])->name('skins.import.form');
     Route::post('/skins-import', [SkinImportController::class, 'import'])->name('skins.import');
     Route::get('/skins-import/template', [SkinImportController::class, 'downloadTemplate'])->name('skins.import.template');
+
+    // Skin Scraper Routes
+    Route::get('/skins-scraper', [SkinScraperController::class, 'showScraperForm'])->name('skins.scraper.form');
+    Route::get('/skins-scraper/run', [SkinScraperController::class, 'run'])->name('skins.scraper.run');
 });
 
 require __DIR__ . '/auth.php';
