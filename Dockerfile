@@ -1,23 +1,10 @@
 # -------------------------------------------------------
-# Stage 1: PHP/Composer dependencies
-# -------------------------------------------------------
-FROM composer:2 AS vendor
-
-WORKDIR /app
-COPY composer.json composer.lock ./
-RUN composer install \
-    --no-dev \
-    --prefer-dist \
-    --no-interaction \
-    --no-progress \
-    --optimize-autoloader
-
-# -------------------------------------------------------
-# Stage 2: Production image (PHP + Node dalam satu image)
+# Single stage: PHP + Apache + Composer + Node
+# Composer dijalankan di sini agar ext-gd tersedia
 # -------------------------------------------------------
 FROM php:8.3-apache
 
-# System packages, Python3, Node.js, and PHP extensions
+# System packages, Python3, PHP extensions
 RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     curl \
@@ -40,10 +27,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         exif \
         opcache \
     && a2enmod rewrite \
-    # Install Node.js 20 via NodeSource (tanpa pull image terpisah)
+    # Install Node.js 20 via NodeSource
     && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs \
     && rm -rf /var/lib/apt/lists/*
+
+# Install Composer binary dari official image
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
@@ -52,13 +42,18 @@ ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf \
     && sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
-# Copy application source
+# Copy source code
 COPY . .
 
-# Copy vendor dari stage 1
-COPY --from=vendor /app/vendor ./vendor
+# Install PHP dependencies (ext-gd sudah tersedia di stage ini)
+RUN composer install \
+    --no-dev \
+    --prefer-dist \
+    --no-interaction \
+    --no-progress \
+    --optimize-autoloader
 
-# Install npm dependencies dan build frontend assets
+# Install npm dependencies, build frontend, lalu hapus node_modules
 RUN npm ci --prefer-offline \
     && npm run build \
     && rm -rf node_modules
