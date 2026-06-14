@@ -149,7 +149,7 @@ class SkinsImport implements ToModel, WithHeadingRow, WithValidation
                 'image_url' => $this->sanitizeValue($row['image_url'] ?? null),
                 'is_battlepass' => $this->sanitizeValue($row['is_battlepass'] ?? null),
                 'popularity' => $this->sanitizeDecimal($row['popularity'] ?? null),
-                'vfx' => $this->sanitizeDecimal($row['vfx'] ?? null),
+                'vfx' => $this->sanitizeVfx($row['vfx'] ?? null),
                 'theme_uuid' => $this->sanitizeValue($row['theme_uuid'] ?? null),
                 'score' => $this->sanitizeDecimal($row['score'] ?? null),
             ];
@@ -204,13 +204,13 @@ class SkinsImport implements ToModel, WithHeadingRow, WithValidation
     public function rules(): array
     {
         return [
-            'uuid'      => 'required',
-            'weapon'    => 'required',
-            'skin_name' => 'required',
-            'price'     => 'nullable|numeric|min:0',
-            'vfx'       => 'nullable|numeric|min:1|max:10',
-            'popularity'=> 'nullable|numeric|min:0|max:10',
-            'score'     => 'nullable|numeric',
+            'uuid'       => 'required',
+            'weapon'     => 'required',
+            'skin_name'  => 'required',
+            'price'      => 'nullable|numeric|min:0',
+            'vfx'        => 'nullable|numeric|min:0|max:10',
+            'popularity' => 'nullable|numeric|min:0|max:10',
+            'score'      => 'nullable|numeric',
         ];
     }
 
@@ -281,6 +281,38 @@ class SkinsImport implements ToModel, WithHeadingRow, WithValidation
 
         // Convert ke integer
         return (int) $cleaned;
+    }
+
+    /**
+     * Sanitize VFX value - clamp ke range 0.0–10.0
+     * Jika nilai > 10 (misal dari skala lama), dinormalisasi otomatis.
+     *
+     * @param mixed $value
+     * @return float|null
+     */
+    protected function sanitizeVfx($value): ?float
+    {
+        if (is_null($value) || $value === '' || strtolower(trim((string) $value)) === 'unknown') {
+            return null;
+        }
+
+        $val = (float) preg_replace('/[^0-9.\-]/', '', (string) $value);
+
+        if ($val <= 0) return 0.0;
+
+        // Jika masih dalam skala 0-10, langsung clamp
+        if ($val <= 10.0) {
+            return round(min(10.0, max(0.0, $val)), 4);
+        }
+
+        // Nilai > 10: kemungkinan dari skala lama (misalnya 0-100 atau raw score)
+        // Normalisasi ke 0-10
+        if ($val <= 100.0) {
+            return round($val / 10.0, 4);   // skala 0-100 -> 0-10
+        }
+
+        // Nilai sangat besar (>100): set ke 10.0 sebagai batas maksimal
+        return 10.0;
     }
 
     /**

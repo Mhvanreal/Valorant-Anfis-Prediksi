@@ -63,29 +63,17 @@ RARITY_MAP = {
 # VFX SCORING ENGINE
 # ──────────────────────────────────────────────
 #
-# Setiap level item yang tersedia di skin memberikan bobot terhadap skor VFX.
-# Bobot didesain berdasarkan intensitas visual efek yang ditimbulkan:
+# VFX score dihitung dari level items skin, skala 0.0 - 10.0.
 #
-#   VFX              → Efek visual partikel langsung pada senjata (+3.0)
-#   KillEffect       → Efek saat kill (percikan, ledakan, dll)     (+2.0)
-#   Finisher         → Animasi finishing kill spektakuler           (+1.5)
-#   Animation        → Animasi idle/inspect senjata                (+1.0)
-#   Transformation   → Senjata berubah bentuk/wujud                (+1.0)
-#   SoundEffects     → Efek suara khusus (mendukung imersi visual) (+0.5)
-#   Voiceover        → Suara karakter/narrator                     (+0.5)
-#   KillBanner       → Banner kill kustom                          (+0.3)
-#   KillCounter      → Counter kill pada senjata                   (+0.3)
-#   InspectAndKill   → Animasi inspect + kill                      (+0.5)
-#   Randomizer       → Efek acak (menambah variasi visual)         (+0.5)
-#   TopFrag          → Efek saat menjadi top fragger               (+0.3)
-#   AttackerDefenderSwap → Efek swap tim                           (+0.2)
-#   FishAnimation    → Animasi unik (misal Neptune skin)           (+0.3)
-#   HeartbeatAndMapSensor → Sensor interaktif                      (+0.3)
-#   SongShuffle      → Efek musik/visual                           (+0.2)
+# Pendekatan: setiap level item punya bobot raw. Raw score dijumlah,
+# lalu dinormalisasi ke 0-10 menggunakan min-max normalization
+# berdasarkan skor teoritis minimum (0) dan maksimum (skin dengan
+# semua level item = ~13.7), sehingga distribusi lebih merata.
 #
-# Skor dasar = 1.0 (semua skin minimal 1)
-# Skor ditambah bobot level items, lalu dikali faktor jumlah level
-# Hasil di-clamp ke rentang 1.0 - 10.0 dan dibulatkan ke 1 desimal.
+# Skin tanpa level item apapun  = 0.0
+# Skin dengan satu VFX level    = ~2.2
+# Skin dengan VFX+Anim+Finisher = ~5.2
+# Skin Ultra dengan semua item  = 10.0
 # ──────────────────────────────────────────────
 
 VFX_WEIGHTS = {
@@ -107,38 +95,32 @@ VFX_WEIGHTS = {
     "EEquippableSkinLevelItem::SongShuffle":       0.2,
 }
 
-# Bonus berdasarkan jumlah level total skin
-LEVEL_COUNT_BONUS = {
-    1: 0.0,
-    2: 0.2,
-    3: 0.4,
-    4: 0.6,
-    5: 0.8,
-}
+# Skor raw tertinggi yang mungkin (jika skin punya semua level item sekaligus)
+# Digunakan sebagai batas atas normalisasi.
+VFX_RAW_MAX = sum(VFX_WEIGHTS.values())   # ~13.7
+
 
 def calculate_vfx_score(levels: list) -> float:
     """
-    Hitung VFX score (1.0 - 10.0) berdasarkan level items skin.
+    Hitung VFX score skala 0.0 - 10.0 berdasarkan level items skin.
 
     Algoritma:
-      1. Mulai dari skor dasar 1.0
-      2. Tambahkan bobot setiap level item yang ditemukan
-      3. Tambahkan bonus berdasarkan jumlah level total
-      4. Clamp ke [1.0, 10.0] dan bulatkan ke 1 desimal
-    """
-    base_score = 1.0
-    item_score = 0.0
+      1. Jumlahkan bobot semua level item yang ditemukan  -> raw_score
+      2. Normalisasi: vfx = (raw_score / VFX_RAW_MAX) * 10
+      3. Clamp ke [0.0, 10.0] dan bulatkan ke 1 desimal
 
+    Skin tanpa VFX apapun mendapat 0.0 (bukan 1.0),
+    sehingga skala penuh 0-10 digunakan.
+    """
+    raw_score = 0.0
     for level in levels:
         item = level.get("levelItem")
         if item and item in VFX_WEIGHTS:
-            item_score += VFX_WEIGHTS[item]
+            raw_score += VFX_WEIGHTS[item]
 
-    level_count = len(levels)
-    level_bonus = LEVEL_COUNT_BONUS.get(level_count, 1.0 if level_count > 5 else 0.0)
-
-    total = base_score + item_score + level_bonus
-    return round(min(10.0, max(1.0, total)), 1)
+    # Normalisasi ke 0-10
+    normalized = (raw_score / VFX_RAW_MAX) * 10.0
+    return round(min(10.0, max(0.0, normalized)), 1)
 
 
 # ──────────────────────────────────────────────
