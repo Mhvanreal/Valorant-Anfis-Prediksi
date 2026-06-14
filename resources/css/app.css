@@ -1,6 +1,9 @@
 /* Font Awesome - local, no CDN dependency */
 @import '@fortawesome/fontawesome-free/css/all.min.css';
 
+/* Material Icons - local, no Google Fonts dependency */
+@import 'material-icons/iconfont/material-icons.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

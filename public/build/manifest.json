@@ -1,6 +1,78 @@
 {
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.ttf": {
+    "file": "assets/fa-brands-400-D7HcTrzQ.ttf",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.ttf"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.woff2": {
+    "file": "assets/fa-brands-400-C-jaCRNI.woff2",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.woff2"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.ttf": {
+    "file": "assets/fa-regular-400-BSSd-Tma.ttf",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.ttf"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.woff2": {
+    "file": "assets/fa-regular-400-TCCU0xbi.woff2",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.woff2"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.ttf": {
+    "file": "assets/fa-solid-900-f4MajOib.ttf",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.ttf"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2": {
+    "file": "assets/fa-solid-900-tLH6XCuf.woff2",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-v4compatibility.ttf": {
+    "file": "assets/fa-v4compatibility-Ac5Ki1KR.ttf",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-v4compatibility.ttf"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-v4compatibility.woff2": {
+    "file": "assets/fa-v4compatibility-BajFMAgw.woff2",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-v4compatibility.woff2"
+  },
+  "node_modules/material-icons/iconfont/material-icons-outlined.woff": {
+    "file": "assets/material-icons-outlined-BpWbwl2n.woff",
+    "src": "node_modules/material-icons/iconfont/material-icons-outlined.woff"
+  },
+  "node_modules/material-icons/iconfont/material-icons-outlined.woff2": {
+    "file": "assets/material-icons-outlined-DZhiGvEA.woff2",
+    "src": "node_modules/material-icons/iconfont/material-icons-outlined.woff2"
+  },
+  "node_modules/material-icons/iconfont/material-icons-round.woff": {
+    "file": "assets/material-icons-round-BDlwx-sv.woff",
+    "src": "node_modules/material-icons/iconfont/material-icons-round.woff"
+  },
+  "node_modules/material-icons/iconfont/material-icons-round.woff2": {
+    "file": "assets/material-icons-round-DrirKXBx.woff2",
+    "src": "node_modules/material-icons/iconfont/material-icons-round.woff2"
+  },
+  "node_modules/material-icons/iconfont/material-icons-sharp.woff": {
+    "file": "assets/material-icons-sharp-CH1KkVu7.woff",
+    "src": "node_modules/material-icons/iconfont/material-icons-sharp.woff"
+  },
+  "node_modules/material-icons/iconfont/material-icons-sharp.woff2": {
+    "file": "assets/material-icons-sharp-gidztirS.woff2",
+    "src": "node_modules/material-icons/iconfont/material-icons-sharp.woff2"
+  },
+  "node_modules/material-icons/iconfont/material-icons-two-tone.woff": {
+    "file": "assets/material-icons-two-tone-B7wz7mED.woff",
+    "src": "node_modules/material-icons/iconfont/material-icons-two-tone.woff"
+  },
+  "node_modules/material-icons/iconfont/material-icons-two-tone.woff2": {
+    "file": "assets/material-icons-two-tone-DuNIpaEj.woff2",
+    "src": "node_modules/material-icons/iconfont/material-icons-two-tone.woff2"
+  },
+  "node_modules/material-icons/iconfont/material-icons.woff": {
+    "file": "assets/material-icons-Dr0goTwe.woff",
+    "src": "node_modules/material-icons/iconfont/material-icons.woff"
+  },
+  "node_modules/material-icons/iconfont/material-icons.woff2": {
+    "file": "assets/material-icons-kAwBdRge.woff2",
+    "src": "node_modules/material-icons/iconfont/material-icons.woff2"
+  },
   "resources/css/app.css": {
-    "file": "assets/app-DM4-w4tY.css",
+    "file": "assets/app-Cm3cwMKt.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },

@@ -9,7 +9,6 @@
     <link rel="shortcut icon" type="image/png" href="{{ asset('img/LOGO_Valo.png') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 </head>
 
