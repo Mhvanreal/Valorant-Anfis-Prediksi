@@ -8,7 +8,6 @@
     <link rel="icon" type="image/png" href="{{ asset('img/LOGO_Valo.png') }}">
     <link rel="shortcut icon" type="image/png" href="{{ asset('img/LOGO_Valo.png') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     @stack('styles')
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
