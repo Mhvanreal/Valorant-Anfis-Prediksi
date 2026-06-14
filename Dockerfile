@@ -13,23 +13,14 @@ RUN composer install \
     --optimize-autoloader
 
 # -------------------------------------------------------
-# Stage 2: Node.js — build frontend assets
-# -------------------------------------------------------
-FROM node:20-alpine AS frontend
-
-WORKDIR /app
-COPY package.json package-lock.json vite.config.js tailwind.config.js ./
-COPY resources ./resources
-RUN npm ci --prefer-offline && npm run build
-
-# -------------------------------------------------------
-# Stage 3: Production image
+# Stage 2: Production image (PHP + Node dalam satu image)
 # -------------------------------------------------------
 FROM php:8.3-apache
 
-# System packages, Python3, and PHP extensions
+# System packages, Python3, Node.js, and PHP extensions
 RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
+    curl \
     unzip \
     python3 \
     python3-pip \
@@ -49,6 +40,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         exif \
         opcache \
     && a2enmod rewrite \
+    # Install Node.js 20 via NodeSource (tanpa pull image terpisah)
+    && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /var/www/html
@@ -64,8 +58,10 @@ COPY . .
 # Copy vendor dari stage 1
 COPY --from=vendor /app/vendor ./vendor
 
-# Copy hasil build frontend dari stage 2
-COPY --from=frontend /app/public/build ./public/build
+# Install npm dependencies dan build frontend assets
+RUN npm ci --prefer-offline \
+    && npm run build \
+    && rm -rf node_modules
 
 # Direktori writable untuk Laravel
 RUN mkdir -p storage/framework/{cache,sessions,testing,views} \
@@ -74,7 +70,7 @@ RUN mkdir -p storage/framework/{cache,sessions,testing,views} \
     && chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
-# PHP opcache recommended settings for production
+# PHP opcache settings untuk production
 RUN { \
     echo 'opcache.enable=1'; \
     echo 'opcache.memory_consumption=128'; \
